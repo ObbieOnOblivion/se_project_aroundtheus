@@ -12,6 +12,9 @@
     margin: 0px;
 }
 
+.profile__item_button{
+}
+
 .profile__image_jac{
     border-radius: 50%;
     width: 120px;
@@ -23,15 +26,18 @@
 }
 
 .profile__header{
+    display: flex;
+    align-items: center;
+}
+
+.profile__header_text{
+    margin: 0px;
     font-family: Inter, Arial, helvetica, sans-serif;
     font-style: normal;
     font-weight: 500;
     font-size: 42px;
     line-height: 48px;
-    display: flex;
-    align-items: center;
 }
-
 .profile__sub-header{
     font-family: Inter;
     font-style: normal;
@@ -75,14 +81,16 @@
     .profile__items{
         display: grid;
         grid-template-columns: repeat(2, minmax(min-content, max-content));
-        
+        grid-template-areas: 
+        "top top"
+        "button button"
+        ;
+    }
+
+    .profile__button_add{
+        grid-area: button;
     }
 }
-
-@media screen and (max-width:623px) {
-    
-}
-
 @media screen and (max-width:468px){
     .profile{
         margin-bottom: 36px;

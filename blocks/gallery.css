@@ -18,6 +18,10 @@
     margin: 0px;
 
 }
+.gallery__card{
+    display: flex;
+    flex-direction: column;
+}
 .gallery__img{
     height: 282px;
     width: 282px;
