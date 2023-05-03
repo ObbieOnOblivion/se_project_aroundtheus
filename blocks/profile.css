@@ -89,6 +89,7 @@
 
     .profile__button_add{
         grid-area: button;
+        column-span: 2;
     }
 }
 @media screen and (max-width:468px){
