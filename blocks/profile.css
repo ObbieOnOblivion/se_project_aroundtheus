@@ -1,0 +1,137 @@
+.profile{
+    margin-bottom: 47.25px;
+    margin-top: 36.25px;
+}
+
+.profile__items{
+    padding:0px;
+    display: flex;
+    color: white;
+    list-style-type: none;
+    align-items: center;
+    margin: 0px;
+}
+
+.profile__image_jac{
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    margin-right: 26.25px;
+    margin-left: 22.5px;
+    margin-top: 3.75px;
+    margin-bottom: 3.75px;
+}
+
+.profile__header{
+    font-family: Inter, Arial, helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 48px;
+    display: flex;
+    align-items: center;
+}
+
+.profile__sub-header{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    margin:0px;
+    margin-top: 7px;
+}
+
+.profile__image_edit{
+    height: 10px;
+    width: 10px;
+}
+
+.profile__item_margin_left{
+    margin-left: auto;
+}
+
+.profile__button_edit{
+    background-color: #000;
+    box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    border: 1px solid #FFFFFF;
+    margin-left: 18px;
+}
+
+.profile__button_add{
+    background-color: #000;
+    box-sizing: border-box;
+    border: 2px solid #FFFFFF;
+    border-radius: 2px;
+    width: 150px;
+    height: 50px;
+    padding: 0px;
+}
+
+
+@media screen and (max-width:790px) {
+    .profile__items{
+        display: grid;
+        grid-template-columns: repeat(2, minmax(min-content, max-content));
+        
+    }
+}
+
+@media screen and (max-width:623px) {
+    
+}
+
+@media screen and (max-width:468px){
+    .profile{
+        margin-bottom: 36px;
+        margin-top: 38.25px;
+    }
+    .profile__items{
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .profile__header{
+        font-family: Inter, Arial, helvetica, sans-serif;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 22px;
+        line-height: 27px;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile__item{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .profile__item_description{
+        flex-direction: column;
+    }
+
+    .profile__item_margin_left{
+        margin: 0px;
+    }
+
+    .profile__button_add{
+        margin-top: 36px;
+    }
+
+    .profile__sub-header{
+        margin-top: 14px;
+    }
+
+    .profile__header{
+        margin-top: 26.25px;
+    }
+
+}
+
+
+
+
+
+
