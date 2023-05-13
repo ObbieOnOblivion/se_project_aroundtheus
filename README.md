@@ -1,21 +1,18 @@
 # Project 3: Around The U.S.
 
-### Overview  
+ ~ In this project we cover a the destinations of a travelor named Jacques Cousteau
 
-* Intro  
-* Figma  
-* Images  
-  
-**Intro**
-  
-This project is made so all the elements are displayed correctly on popular screen sizes. We recommend investing more time in completing this project, since it's more difficult than previous ones.  
-  
-**Figma**  
-  
-* [Link to the project on Figma](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)  
-  
-**Images**  
-  
-The way you'll do this at work is by exporting images directly from Figma — we recommend doing that to practice more. Don't forget to optimize them [here](https://tinypng.com/), so your project loads faster. 
-  
-Good luck and have fun!
+ ~ The layout consists of a...
+   - Profile image (./blocks/profile.css .profile__avatar)
+   - Profile name (./blocks/profile.css .profile__header-text)
+   - Profile description (./blocks/profile.css .profile__sub-header)
+   - Adaptive Buttons
+     - (./blocks/profile.css .profile__edit-button)
+     - (./blocks/profile.css .profile__add-button)
+     - (./blocks/gallery.css .gallery__like-button)
+   - snapshots of destinations (.blocks/gallery.css .gallery__cards)
+
+ ~ features include adaptive and responsive web designs
+
+ ~ come check it out!
+   - https://obbieonoblivion.github.io/se_project_aroundtheus/

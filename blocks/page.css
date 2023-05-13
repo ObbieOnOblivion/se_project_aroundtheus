@@ -6,17 +6,6 @@
     margin:auto;
 }
 
-.page__content{
-    max-width: 880px;
-    display: grid;
-    grid-template-columns: minmax(1fr, 880px);
-    grid-auto-rows: repeat(auto, 1fr);
-}
-
-.content__header{
-    border-bottom: solid 1px #fff;
-}
-
 @media screen and (max-width:904px) {
     .page{
         max-width: 100%;
@@ -24,8 +13,10 @@
         margin-left: 19px;
         margin-right: 19px;
     }    
-    .page__content{
-        max-width: 100%;
+}
+
+@media screen and (max-width:330px) {
+    .page{
+        margin: 0px;
     }
-    
 }

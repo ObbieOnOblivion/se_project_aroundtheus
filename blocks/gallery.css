@@ -11,7 +11,6 @@
     list-style-type: none;
     padding: 0px;
     display: grid;
-    /* add media queries for this bellow */
     grid-template-columns: repeat(3, 282px);
     column-gap: 17px;
     row-gap: 20px;
@@ -36,15 +35,14 @@
     border-bottom-right-radius: 10px;
     display: flex;
     justify-content: space-between;
-
-    display: flex;
     align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .gallery__text{
     margin: 0px;
-    margin-left: 20px;
-    font-family: Inter, Arial, helvetica, sans-serif ;
+    font-family: Inter, Arial, helvetica, sans-serif;
     font-style: normal;
     font-weight: 900;
     font-size: 24px;
@@ -57,9 +55,20 @@
 .gallery__like-image{
     height: 21px;
     width: 18px;
-    margin-right: 30px;
 }
 
+.gallery__like-button{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    background-color: transparent;
+    cursor: pointer;
+
+}
+
+.gallery__like-button:hover{
+    opacity: 0.5;
+}
 
 @media screen and (max-width:904px) {
     .gallery__cards{

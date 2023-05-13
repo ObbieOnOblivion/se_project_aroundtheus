@@ -5,9 +5,22 @@
 }
 .footer__text{
     margin: 0px;
-    font-family: 'Inter';
+    font-family: Inter, Arial, helvetica, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
+}
+
+@media screen and (max-width: 330px) {
+    .footer{
+        margin-left: 19px;
+        margin-top: 48px;
+        margin-bottom: 36px;
+    }
+    .footer__text{
+        font-size: 14px;
+        line-height: 17px;
+    }
+    
 }

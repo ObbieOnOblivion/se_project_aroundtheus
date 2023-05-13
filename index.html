@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>America</title>
         <meta charset="UTF-8">
@@ -11,89 +11,103 @@
         <link type="image/x-icon" rel="icon" href="favicon.ico" >
     </head>
     <body class="page">
-        <div class="page__content">
-            <header class="content__header header">
-                <img class="header__img" src="./images/header-Vector.svg" >
+        <div class="content">
+            <header class="header">
+                <img class="header__img" src="./images/header-Vector.svg" alt="Header Logo"  >
             </header>
-            <section class="profile">
-                <div class="profile__items">
-                    <div class="profile__item">
-                        <img class="profile__image_jac" src="./images/jacques-cousteau.svg" alt="Jacques Cousteau">
-                    </div>
-
-                    <div class="profile__item profile__item_description">
-                        <div class="profile__header">
-                            <h1 class="profile__header_text">Jacques Cousteau</h1> 
-                            <button class="profile__button profile__button_edit">
-                                <img class="profile__image_edit" src="./images/edit-logo.svg" alt="Edit Button">
-                            </button>
+            <main>
+                <section class="profile">
+                    <div class="profile__items">
+                        <div class="profile__item">
+                            <img class="profile__avatar" src="./images/jacques-cousteau.svg" alt="Jacques Cousteau">
                         </div>
-                        <p class="profile__sub-header">Explorer</p>
-                    </div>
+    
+                        <div class="profile__item-description">
+                            <div class="profile__header">
+                                <h1 class="profile__header-text">Jacques Cousteau</h1> 
+                                <button class="profile__edit-button" type="button">
+                                    <img class="profile__image-edit" src="./images/edit-logo.svg" alt="Edit Button">
+                                </button>
+                            </div>
+                            <p class="profile__sub-header">Explorer</p>
+                        </div>
 
-                    <div class="profile__item profile__item_margin_left profile__item_button ">
-                        <button class="profile__button profile__button_add">
-                            <img src="./images/Vector (1).svg" class="profile__image_add" alt="Add Button" >
+                        <button class="profile__add-button" type="button">
+                            <img src="./images/add-button.svg" class="profile__image-add" alt="Add Button" >
                         </button>
+    
                     </div>
-                </div>
-            </section>
-            <section class="gallery">
-                <ul class="gallery__cards">
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/yosemite-valley.svg" alt="yosemite vally image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Yosemite Valley</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-                    </li>
-
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/lake-louise.svg" alt="lake louise image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Lake Louise</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-                    </li>
-
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/bald-mountains.svg" alt="bald mountains image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Bald Mountains</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-
-                    </li>
-
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/latemar.svg" alt="latemar mountains image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Latemar</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-
-                    </li>
-
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/vanoise-national-park.svg" alt="vanoise national park image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Vanoise National Park</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-
-                    </li>
-
-                    <li class="gallery__card">
-                        <img class="gallery__img" src="./images/lago-di-braies.svg" alt="lago di braies image">
-                        <div class="gallery__description">
-                            <p class="gallery__text">Lago di Braies</p>
-                            <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                        </div>
-
-                    </li>
-
-                </ul>
-            </section>
+                </section>
+                <section class="gallery">
+                    <ul class="gallery__cards">
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/yosemite-valley.svg" alt="yosemite vally image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Yosemite Valley</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+                        </li>
+    
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/lake-louise.svg" alt="lake louise image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Lake Louise</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+                        </li>
+    
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/bald-mountains.svg" alt="bald mountains image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Bald Mountains</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+    
+                        </li>
+    
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/latemar.svg" alt="latemar mountains image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Latemar</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+    
+                        </li>
+    
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/vanoise-national-park.svg" alt="vanoise national park image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Vanoise National Park</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+    
+                        </li>
+    
+                        <li class="gallery__card">
+                            <img class="gallery__img" src="./images/lago-di-braies.svg" alt="lago di braies image">
+                            <div class="gallery__description">
+                                <h2 class="gallery__text">Lago di Braies</h2>
+                                <button class="gallery__like-button" type="button">
+                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                                </button>
+                            </div>
+    
+                        </li>
+    
+                    </ul>
+                </section>
+            </main>
+            
             <footer class="footer">
                 <p class="footer__text">© 2022 Around The U.S.</p>
             </footer>

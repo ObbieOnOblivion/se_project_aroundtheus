@@ -1,4 +1,21 @@
+.header{
+    border-bottom: solid 1px rgb(84,84,84, 0.7);
+}
+
+
 .header__img{
     margin-bottom: 41px;
     margin-top: 45px;
+    width: 173px;
+    height: 33px;
+}
+
+@media screen and (max-width: 330px) {
+    .header__img{
+        width: 126px;
+        height: 24px;
+        margin-left: 27px;
+        margin-top: 28px;
+        margin-bottom: 32px;
+    }
 }
