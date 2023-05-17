@@ -11,6 +11,19 @@
         <link type="image/x-icon" rel="icon" href="favicon.ico" >
     </head>
     <body class="page">
+        <div class="modal" id="modal">
+            <div class="modal__container">
+                <button class="modal__close-button" id="modal__close-button" type="button">
+                    <img class="modal__close-image" src="./images/Close-Icon.svg">
+                </button>
+                <h5 class="modal__header">Edit profile</h5>
+                <input class="modal__input modal__input_margin-bottom_30px" type="text" placeholder="Jacques Cousteau">
+                <input class="modal__input modal__input_margin-bottom_48px" type="text" placeholder="Explorer">
+                <button class="modal__save-button" type="button">
+                    Save
+                </button>
+            </div>
+        </div>
         <div class="content">
             <header class="header">
                 <img class="header__img" src="./images/header-Vector.svg" alt="Header Logo"  >
@@ -25,7 +38,7 @@
                         <div class="profile__item-description">
                             <div class="profile__header">
                                 <h1 class="profile__header-text">Jacques Cousteau</h1> 
-                                <button class="profile__edit-button" type="button">
+                                <button class="profile__edit-button" id="profile__edit-button" type="button">
                                     <img class="profile__image-edit" src="./images/edit-logo.svg" alt="Edit Button">
                                 </button>
                             </div>
@@ -113,5 +126,6 @@
             </footer>
         </div>
 
+        <script src="./scripts/index.js"></script>
     </body>
 </html>
