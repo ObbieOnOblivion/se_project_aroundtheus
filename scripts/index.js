@@ -29,19 +29,64 @@ const initialCards = [
         name: "Lago di Braies",
         link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg", 
     }
-]
+];
 
-const profileEditButton = document.querySelector("#profile__edit-button")
-const profileEditModal = document.querySelector("#modal")
-const modalCloseButton = document.querySelector("#modal__close-button")
+// Elements
 
-console.log(profileEditButton)
+const profile = document.querySelector("#profile");
+const profileEditButton = profile.querySelector("#profile__edit_button");
+const profileAddButton = profile.querySelector("#profile__add_button");
+const profileName = profile.querySelector("#profile__name");
+const profileDescription = profile.querySelector("#profile__description");
+const profileEditModal = document.querySelector("#profile-modal");
+const modalCloseButton = document.querySelector("#profile-modal__close_button");
+const modalInputName = profileEditModal.querySelector("#profile-modal__input_name");
+const modalInputDescription = profileEditModal.querySelector("#profile-modal__input_description");
+const modalForm = profileEditModal.querySelector("#profile-modal__form");
+const cardTemplate = document.querySelector("#card-template").content.firstElementChild;
+const cardListEl = document.querySelector("#gallery__list")
 
-profileEditButton.addEventListener("click", () => profileEditModal.classList.toggle("modal_open"))
+//functions
 
-modalCloseButton.addEventListener("click", () => profileEditModal.classList.toggle("modal_open"))
+function togglepopup(){
+    profileEditModal.classList.toggle("modal_open");
 
+};
 
+function handleProfileEditSubmit(event){
+    event.preventDefault();
+    profileName.textContent = modalInputName.value;
+    profileDescription.textContent = modalInputDescription.value;
+    togglepopup();
+};
 
+function openProfileModal(){
+    modalInputName.value = profileName.textContent;
+    modalInputDescription.value = profileDescription.textContent;
+    togglepopup();
+}
+
+function getCardElement(cardData){
+    const cardElement = cardTemplate.cloneNode(true);
+    const cardImageEl = cardElement.querySelector("#gallery__image")
+    const cardTitleEl = cardElement.querySelector("#gallery__text")
+    cardTitleEl.textContent = cardData.name; 
+    cardImageEl.src = cardData.link;
+    cardImageEl.alt = cardData.name;
+    return cardElement;
+};
+
+//event listeners
+
+profileEditButton.addEventListener("click", openProfileModal);
+modalCloseButton.addEventListener("click", togglepopup);
+
+modalForm.addEventListener("submit", handleProfileEditSubmit);
+
+initialCards.forEach((cardData) => {
+    const listElement = getCardElement(cardData);
+    cardListEl.append(listElement);
+
+});
 
  

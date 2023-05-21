@@ -11,25 +11,25 @@
         <link type="image/x-icon" rel="icon" href="favicon.ico" >
     </head>
     <body class="page">
-        <div class="modal" id="modal">
-            <div class="modal__container">
-                <button class="modal__close-button" id="modal__close-button" type="button">
-                    <img class="modal__close-image" src="./images/Close-Icon.svg">
-                </button>
+        <div class="modal" id="profile-modal">
+            <form class="modal__container" id="profile-modal__form">
                 <h5 class="modal__header">Edit profile</h5>
-                <input class="modal__input modal__input_margin-bottom_30px" type="text" placeholder="Jacques Cousteau">
-                <input class="modal__input modal__input_margin-bottom_48px" type="text" placeholder="Explorer">
-                <button class="modal__save-button" type="button">
+                <input required id="profile-modal__input_name" class="modal__input modal__input_margin-bottom_1" type="text" placeholder="Name">
+                <input required id="profile-modal__input_description" class="modal__input modal__input_margin-bottom_2" type="text" placeholder="description">
+                <button class="modal__save-button" type="submit">
                     Save
                 </button>
-            </div>
+            </form>
+            <button class="modal__close-button" id="profile-modal__close_button" type="button">
+                <img class="modal__close-image" src="./images/Close-Icon.svg">
+            </button>
         </div>
         <div class="content">
             <header class="header">
                 <img class="header__img" src="./images/header-Vector.svg" alt="Header Logo"  >
             </header>
             <main>
-                <section class="profile">
+                <section class="profile" id="profile">
                     <div class="profile__items">
                         <div class="profile__item">
                             <img class="profile__avatar" src="./images/jacques-cousteau.svg" alt="Jacques Cousteau">
@@ -37,95 +37,49 @@
     
                         <div class="profile__item-description">
                             <div class="profile__header">
-                                <h1 class="profile__header-text">Jacques Cousteau</h1> 
-                                <button class="profile__edit-button" id="profile__edit-button" type="button">
+                                <h1 id="profile__name" class="profile__header-text">Jacques Cousteau</h1> 
+                                <button class="profile__edit-button" id="profile__edit_button" type="button">
                                     <img class="profile__image-edit" src="./images/edit-logo.svg" alt="Edit Button">
                                 </button>
                             </div>
-                            <p class="profile__sub-header">Explorer</p>
+                            <p id="profile__description" class="profile__sub-header">Explorer</p>
                         </div>
 
-                        <button class="profile__add-button" type="button">
+                        <button class="profile__add-button" id="profile__add_button" type="button">
                             <img src="./images/add-button.svg" class="profile__image-add" alt="Add Button" >
                         </button>
     
                     </div>
                 </section>
+
                 <section class="gallery">
-                    <ul class="gallery__cards">
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/yosemite-valley.svg" alt="yosemite vally image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Yosemite Valley</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-                        </li>
-    
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/lake-louise.svg" alt="lake louise image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Lake Louise</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-                        </li>
-    
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/bald-mountains.svg" alt="bald mountains image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Bald Mountains</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-    
-                        </li>
-    
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/latemar.svg" alt="latemar mountains image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Latemar</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-    
-                        </li>
-    
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/vanoise-national-park.svg" alt="vanoise national park image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Vanoise National Park</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-    
-                        </li>
-    
-                        <li class="gallery__card">
-                            <img class="gallery__img" src="./images/lago-di-braies.svg" alt="lago di braies image">
-                            <div class="gallery__description">
-                                <h2 class="gallery__text">Lago di Braies</h2>
-                                <button class="gallery__like-button" type="button">
-                                    <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
-                                </button>
-                            </div>
-    
-                        </li>
-    
+                    <ul id="gallery__list" class="gallery__cards">
+
                     </ul>
                 </section>
+
+
+                <template id="card-template">
+                    <li class="gallery__card">
+                        <img id="gallery__image" class="gallery__img" src="" alt="">
+                        <div class="gallery__description">
+                            <h2 id="gallery__text" class="gallery__text"></h2>
+                            <button class="gallery__like-button" type="button">
+                                <img class="gallery__like-image" src="./images/Vector.svg" alt="Heart Image">
+                            </button>
+                        </div>
+                    </li>
+                </template>
+
+
             </main>
+
             
             <footer class="footer">
                 <p class="footer__text">© 2022 Around The U.S.</p>
             </footer>
         </div>
 
-        <script src="./scripts/index.js"></script>
+        <script src="./scripts/index.js" defer></script>
     </body>
 </html>
