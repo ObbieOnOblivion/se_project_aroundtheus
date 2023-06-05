@@ -20,6 +20,7 @@
 .gallery__card{
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .gallery__img{
@@ -52,12 +53,26 @@
     line-height: 29px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;    
+    overflow: hidden;
+    max-width: 220px;    
 }
 
 .gallery__like-image{
     height: 21px;
     width: 18px;
+    color:black;
+}
+
+.gallery__trash{
+    position: absolute;
+    right: 15px;
+    top: 18px;
+    background-color: transparent;
+    border: 0px;
+    background-image: url("../images/Trash.svg");
+    width: 18px;
+    height: 20px;
+
 }
 
 .gallery__like-button{
@@ -67,6 +82,16 @@
     background-color: transparent;
     cursor: pointer;
     transition: opacity .3s ease-in .1s;
+    background-image: url("../images/Vector.svg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 18px;
+    width: 21px;
+}
+
+.gallery__like-button_liked{
+    background-image: url("../images/Union.svg");
 }
 
 .gallery__like-button:hover{
