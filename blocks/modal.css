@@ -3,12 +3,17 @@
     background-color: rgba(0,0,0, .6);
     height: 100vh;
     width: 100vw;
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     left: 0px;
     flex-direction: column-reverse;
     z-index: 1;
+    visibility: hidden;
+    opacity: 0;
+    transition: all ease-in 0.2s;
+
+
 }
 
 
@@ -70,13 +75,6 @@
 
 }
 
-.modal__input_margin-bottom_1{
-    margin-bottom: 30px;
-}
-
-.modal__input_margin-bottom_2{
-    margin-bottom: 48px;
-}
 .modal__save-button{
     height: 50px;
     width: 100%;
@@ -143,12 +141,32 @@
 }
 
 .modal_open{
-    display: flex;
-    transition: opacity .7s ease-in;
-    opacity: 0;
-}
-.modal_open:hover{
     opacity: 1;
+    visibility: visible;
+}
+
+.transparent{
+    background-color:transparent;
+    color: rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+.modal__input-description{
+    height: 17px;
+    width: 100%;
+    margin-bottom: 11px;
+    margin-top: 2px;
+    color: #F00;
+    font-size: 12px;
+    font-family: "Inter", Arial, sans-serif;
+
+}
+
+.modal__close-button_transparent{
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.15);
+    border:solid 2px rgba(0, 0, 0, 0.15);
+
 }
 
 @media screen and (max-width: 730px){

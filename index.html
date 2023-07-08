@@ -14,8 +14,10 @@
         <div class="modal" id="profile-modal">
             <form class="modal__container" id="profile-modal__form" name="edit-form">
                 <h5 class="modal__header">Edit profile</h5>
-                <input required id="profile-modal__input_name" class="modal__input modal__input_margin-bottom_1" type="text" placeholder="Name">
-                <input required id="profile-modal__input_description" class="modal__input modal__input_margin-bottom_2" type="text" placeholder="description">
+                <input required minlength="2" maxlength="40" id="profile-modal__input_name" class="modal__input" type="text" placeholder="Name">
+                <span id="profile-modal__input_name-error" class="modal__input-description"></span>
+                <input required minlength="2" maxlength="200" id="profile-modal__input_description" class="modal__input" type="text" placeholder="description">
+                <span id="profile-modal__input_description-error" class="modal__input-description "></span>
                 <button id="modal__save-button" class="modal__save-button" type="submit">
                     Save
                 </button>
@@ -26,7 +28,7 @@
         </div>
 
         <div class="modal" id="picture-modal">
-            <div class="modal__picture-container">
+            <div class="modal__picture-container" id="picture-container">
                 <button class="modal__picture-close-button" id="picture-modal__close_button" type="button">
                     <img class="modal__close-image" src="./images/Close-Icon.svg" alt="close image">
                 </button>
@@ -39,8 +41,10 @@
         <div class="modal" id="add-modal">
             <form class="modal__container" id="picture-modal__form" name="add-form">
                 <h5 class="modal__header">New! Place</h5>
-                <input required id="place-modal__input_name" class="modal__input modal__input_margin-bottom_1" type="text" placeholder="Title">
-                <input required id="place-modal__input_description" class="modal__input modal__input_margin-bottom_2" type="text" placeholder="Image Link">
+                <input minlength="1" maxlength="30" required id="place-modal__input_name" class="modal__input modal__input_margin-bottom_1" type="text" placeholder="Title">
+                <span id="place-modal__input_name-error" class="modal__input-description"></span>
+                <input required id="place-modal__input_description" class="modal__input modal__input_margin-bottom_2" type="url" placeholder="Image Link">
+                <span id="place-modal__input_description-error" class="modal__input-description"></span>
                 <button id="modal__place-save-button" class="modal__save-button" type="submit">
                     Save
                 </button>
@@ -106,5 +110,6 @@
         </div>
 
         <script src="./scripts/index.js" defer></script>
+        <script src="./scripts/validate.js" defer></script>
     </body>
 </html>
