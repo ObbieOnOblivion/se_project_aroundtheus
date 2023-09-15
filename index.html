@@ -29,7 +29,7 @@
 
         <div class="modal" id="picture-modal">
             <div class="modal__picture-container" id="picture-container">
-                <button class="modal__picture-close-button" id="picture-modal__close_button" type="button">
+                <button class="modal__close-button modal__close-button_position_absolute" type="button">
                     <img class="modal__close-image" src="./images/Close-Icon.svg" alt="close image">
                 </button>
                 <img src="https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg" alt="" class="modal__picture" 
@@ -111,7 +111,9 @@
 
         <script type="module" src="./pages/index.js" defer></script> 
         <script type="module" src="./components/card.js" defer></script> 
-        <script src="./components/FormValidator.js"></script>
+        <script type="module" src="./components/FormValidator.js"></script>
+        <script type="module" src="./utils/utils.js" defer></script> 
+
         
     </body>
 </html>

@@ -111,20 +111,6 @@
     cursor:pointer;
 }
 
-.modal__picture-close-button{
-    background-color: transparent;
-    position: absolute;
-    height: 40px;
-    width: 40px;
-    top: -40px;
-    right: -40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    cursor:pointer;
-}
-
 .modal__close-button:hover{
     color: #FFFFFF;
     opacity: 1;
@@ -167,6 +153,12 @@
     color: rgba(0, 0, 0, 0.15);
     border:solid 2px rgba(0, 0, 0, 0.15);
 
+}
+
+.modal__close-button_position_absolute{
+    position: absolute;
+    top: -40px;
+    right: -40px;
 }
 
 @media screen and (max-width: 730px){

@@ -1,10 +1,51 @@
 
-import { modalcard } from "../components/card";
+import { Card } from "../components/Card.js";
+import { editValidator, addValidator } from "../components/FormValidator.js";
+import {openModal} from "../utils/utils.js";
+import {closeModal} from "../utils/utils.js";
+import {Section} from "./section.js";
 
-console.log("this is sis sisisisis ")
-console.log(modalcard)
 
-(function display_cards(){
+const galleryList = document.querySelector("#gallery__list");
+const template = document.querySelector("#card-template").content.firstElementChild;
+
+
+editValidator.enableValidation();
+addValidator.enableValidation();
+
+const initialCards = [
+    {
+        name: "Yosemite Valley",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg", 
+    },
+
+    {
+        name: "Lake Louise",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg", 
+    },
+
+    {
+        name: "Bald Mountains",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg", 
+    },
+
+    {
+        name: "Latemar",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/latemar.jpg", 
+    },
+
+    {
+        name: "Vanoise National Park",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/vanoise.jpg", 
+    },
+
+    {
+        name: "Lago di Braies",
+        link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg", 
+    },
+];
+
+(function displayCards(){
     // Elements
     
     const modals = document.querySelectorAll(".modal");
@@ -15,8 +56,6 @@ console.log(modalcard)
     const profileDescription = profile.querySelector("#profile__description");
     const profileEditModal = document.querySelector("#profile-modal");
     const profileAddModal = document.querySelector("#add-modal");
-    const profileModalCloseButton = document.querySelector("#profile-modal__close_button");
-    const placeCloseBtn = document.querySelector("#place-modal__close_button");
     const modalInputName = profileEditModal.querySelector("#profile-modal__input_name");
     const addModalInputName = document.querySelector("#place-modal__input_name");
     const modalInputDescription = profileEditModal.querySelector("#profile-modal__input_description");
@@ -24,43 +63,12 @@ console.log(modalcard)
     const editForm = document.forms["edit-form"];
     const placeModalSaveBtn = document.querySelector("#modal__place-save-button")
     const cardTemplate = document.querySelector("#card-template").content.firstElementChild;
-    const cardListEl = document.querySelector("#gallery__list");
-    const galleryLikeImage = cardTemplate.querySelector("#gallery__like-image");
-    const pictureModal = document.querySelector("#picture-modal");
     const addForm = document.forms["add-form"];
-    const modalContent = pictureModal.querySelector("#picture-container");
-    const modalCloseBtn = modalContent.querySelector("#picture-modal__close_button");
-    const editSaveButton = document.querySelector("#modal__save-button");
-    const spanName = profileEditModal.querySelector("#profile-modal__input_name-error");
-    const spanDescription = profileEditModal.querySelector("#profile-modal__input_description-error");
-    const spanPlace = profileAddModal.querySelector("#place-modal__input_name-error");
-    const spanUrl = profileAddModal.querySelector("#place-modal__input_description-error");
-    
-    //functions
-    
+
     placeModalSaveBtn.disabled = true;
     placeModalSaveBtn.classList.add("transparent");
-    
-    
-    function closeByEscape(evt) {
-    
-        if (evt.key === "Escape"){
-            modals.forEach(modal => {
-                closeModal(modal)
-            })
-        }
-      }
-    
-    function openModal(modal){
-        modal.classList.add("modal_open");
-        document.addEventListener("keydown", closeByEscape)
-    }
-    
-    function closeModal(modal){
-        modal.classList.remove("modal_open");
-        document.removeEventListener("keydown", closeByEscape)
-    
-    }
+
+    //functions
     
     function handleProfileEditSubmit(event){
         event.preventDefault();
@@ -68,31 +76,35 @@ console.log(modalcard)
         profileDescription.textContent = modalInputDescription.value;
         closeModal(profileEditModal);
     };
-    
+
+
+    function addCard(firstInput, lastInput, template ) {
+        const modelCard = new Card(firstInput, lastInput, template);
+        galleryList.prepend(modelCard.addCard()); // would not need this, add to an array;
+    }
+
     function handleProfileAddSubmit(event){
         event.preventDefault();
-        //import card 
-        cardListEl.prepend(getCardElement({name: addModalInputName.value, link: addModalInputDestination.value}));
-        addModalInputName.value = "";
-        addModalInputDestination.value = "";
-        placeModalSaveBtn.disabled = true;
-        placeModalSaveBtn.classList.add("transparent");
+        addCard(addModalInputName.value, addModalInputDestination.value, cardTemplate);
+        addValidator.disableButton();
         closeModal(profileAddModal);
+        event.target.reset();
+
     }
     
     //event listeners
-    
-    modalCloseBtn.addEventListener("click", () => {
-        closeModal(pictureModal);
-    });
-    
-    
+
     modals.forEach((modal) => {
         modal.addEventListener('mousedown', (evt) => {
             if (evt.target.classList.contains('modal')) {
-                closeModal(modal)
+                closeModal(modal);
             }
         })
+
+        const closebtn = modal.querySelector(".modal__close-button");
+        closebtn.addEventListener("click", () =>{
+            closeModal(modal);
+        });
     })
     
     profileEditButton.addEventListener("click", () => {
@@ -100,22 +112,20 @@ console.log(modalcard)
         modalInputDescription.value = profileDescription.textContent;
         openModal(profileEditModal);
     });
-    profileModalCloseButton.addEventListener("click", () =>{
-        closeModal(profileEditModal);
-    })
-    
-    placeCloseBtn.addEventListener("click", () =>{
-        closeModal(profileAddModal);
-    })
-    
+
     editForm.addEventListener("submit", handleProfileEditSubmit);
     
     addForm.addEventListener("submit", handleProfileAddSubmit);
     
     profileAddButton.addEventListener("click", () =>{
         openModal(profileAddModal);
-    
+
     });
+
+    initialCards.forEach(item =>{
+        addCard(item.name, item.link, template);
+    });
+    
 
 })()
 
