@@ -1,19 +1,20 @@
 
-import { Card } from "../components/Card.js";
-import { editValidator, addValidator } from "../components/FormValidator.js";
-import {openModal} from "../utils/utils.js";
-import {closeModal} from "../utils/utils.js";
-import {Section} from "./section.js";
+import { editValidator, addValidator } from "./components/FormValidator.js";
+import {openModal} from "./utils/utils.js";
+import {closeModal} from "./utils/utils.js";
+import "./pages/index.css";
+import {section} from "./components/section.js";
+import {UserInfo} from "./components/UserInfo"
+import { popupWithForm } from "./components/popupWithForm.js";
 
 
 const galleryList = document.querySelector("#gallery__list");
-const template = document.querySelector("#card-template").content.firstElementChild;
 
 
 editValidator.enableValidation();
 addValidator.enableValidation();
 
-const initialCards = [
+let items = [
     {
         name: "Yosemite Valley",
         link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg", 
@@ -62,7 +63,7 @@ const initialCards = [
     const addModalInputDestination = document.querySelector("#place-modal__input_description");
     const editForm = document.forms["edit-form"];
     const placeModalSaveBtn = document.querySelector("#modal__place-save-button")
-    const cardTemplate = document.querySelector("#card-template").content.firstElementChild;
+    const renderer = document.querySelector("#card-template").content.firstElementChild; // template equivelant section
     const addForm = document.forms["add-form"];
 
     placeModalSaveBtn.disabled = true;
@@ -72,20 +73,19 @@ const initialCards = [
     
     function handleProfileEditSubmit(event){
         event.preventDefault();
+        const userInfo = new UserInfo()
+        userInfo.getUserInfo();
+        userInfo.setUserInfo();
         profileName.textContent = modalInputName.value;
         profileDescription.textContent = modalInputDescription.value;
         closeModal(profileEditModal);
     };
 
-
-    function addCard(firstInput, lastInput, template ) {
-        const modelCard = new Card(firstInput, lastInput, template);
-        galleryList.prepend(modelCard.addCard()); // would not need this, add to an array;
-    }
-
     function handleProfileAddSubmit(event){
         event.preventDefault();
-        addCard(addModalInputName.value, addModalInputDestination.value, cardTemplate);
+        items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
+        const addSection = new section({items, renderer}, galleryList);
+        addSection.addItem();
         addValidator.disableButton();
         closeModal(profileAddModal);
         event.target.reset();
@@ -94,6 +94,9 @@ const initialCards = [
     
     //event listeners
 
+    const editPopup = new popupWithForm(editForm.id, handleProfileEditSubmit);
+    const addPopup = new popupWithForm(addForm.id, handleProfileAddSubmit);
+
     modals.forEach((modal) => {
         modal.addEventListener('mousedown', (evt) => {
             if (evt.target.classList.contains('modal')) {
@@ -101,10 +104,6 @@ const initialCards = [
             }
         })
 
-        const closebtn = modal.querySelector(".modal__close-button");
-        closebtn.addEventListener("click", () =>{
-            closeModal(modal);
-        });
     })
     
     profileEditButton.addEventListener("click", () => {
@@ -113,19 +112,16 @@ const initialCards = [
         openModal(profileEditModal);
     });
 
-    editForm.addEventListener("submit", handleProfileEditSubmit);
-    
-    addForm.addEventListener("submit", handleProfileAddSubmit);
-    
     profileAddButton.addEventListener("click", () =>{
         openModal(profileAddModal);
-
     });
 
-    initialCards.forEach(item =>{
-        addCard(item.name, item.link, template);
-    });
+    editPopup.setEventListeners();
     
+    addPopup.setEventListeners();
+    
+    const initialSection = new section({items, renderer}, galleryList)
+    initialSection.addItem();
 
 })()
 

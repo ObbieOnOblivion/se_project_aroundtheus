@@ -1,7 +1,8 @@
 
 import {openModal} from "../utils/utils.js";
+import { popupWithImage } from "./PopupWithImage.js";
 
-const pictureModal = document.querySelector("#picture-modal");
+const imagePopup = new popupWithImage("#picture-modal");
 
 class Card{
     constructor(name , link, template){
@@ -13,11 +14,8 @@ class Card{
 
     _addImageFunctionality(){
         const cardElement = this._template;  
-        const modalContent = pictureModal.querySelector("#picture-container");
         const cardImageEl = cardElement.querySelector("#gallery__image");
         const cardTitleEl = cardElement.querySelector("#gallery__text");
-        const modalImage = modalContent.querySelector("#picture");
-        const modalImageSubHeader = modalContent.querySelector("#picture-modal-description");
 
         cardTitleEl.textContent = this._name; 
         cardImageEl.src = this._link;
@@ -25,10 +23,7 @@ class Card{
 
         cardImageEl.addEventListener("click", () => {
 
-            openModal(pictureModal)
-            modalImage.src = cardImageEl.src;
-            modalImage.alt = this._name;
-            modalImageSubHeader.textContent = cardTitleEl.textContent;
+            imagePopup.open(this._name, this._template);
 
         })
 

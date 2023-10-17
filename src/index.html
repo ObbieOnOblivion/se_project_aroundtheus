@@ -23,14 +23,14 @@
                 </button>
             </form>
             <button class="modal__close-button" id="profile-modal__close_button" type="button">
-                <img class="modal__close-image" src="./images/Close-Icon.svg" alt="close image">
+                <img class="modal__close-image" src="<%=require('./images/Close-Icon.svg')%>" alt="close image">
             </button>
         </div>
 
         <div class="modal" id="picture-modal">
             <div class="modal__picture-container" id="picture-container">
                 <button class="modal__close-button modal__close-button_position_absolute" type="button">
-                    <img class="modal__close-image" src="./images/Close-Icon.svg" alt="close image">
+                    <img class="modal__close-image" src="<%=require('./images/Close-Icon.svg')%>" alt="close image">
                 </button>
                 <img src="https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg" alt="" class="modal__picture" 
                 id="picture">
@@ -50,32 +50,32 @@
                 </button>
             </form>
             <button class="modal__close-button" id="place-modal__close_button" type="button">
-                <img class="modal__close-image" src="./images/Close-Icon.svg" alt="close image">
+                <img class="modal__close-image" src="<%=require('./images/Close-Icon.svg')%>" alt="close image">
             </button>
         </div>
         <div class="content">
             <header class="header">
-                <img class="header__img" src="./images/header-Vector.svg" alt="Header Logo"  >
+                <img class="header__img" src="<%=require('./images/header-Vector.svg')%>" alt="Header Logo"  >
             </header>
             <main>
                 <section class="profile" id="profile">
                     <div class="profile__items">
                         <div class="profile__item">
-                            <img class="profile__avatar" src="./images/jacques-cousteau.svg" alt="Jacques Cousteau">
+                            <img class="profile__avatar" src="<%=require('./images/jacques-cousteau.svg')%>" alt="Jacques Cousteau">
                         </div>
     
                         <div class="profile__item-description">
                             <div class="profile__header">
                                 <h1 id="profile__name" class="profile__header-text">Jacques Cousteau</h1> 
                                 <button class="profile__edit-button" id="profile__edit_button" type="button">
-                                    <img class="profile__image-edit" src="./images/edit-logo.svg" alt="Edit Button">
+                                    <img class="profile__image-edit" src="<%=require('./images/edit-logo.svg')%>" alt="Edit Button">
                                 </button>
                             </div>
                             <p id="profile__description" class="profile__sub-header">Explorer</p>
                         </div>
 
                         <button class="profile__add-button" id="profile__add_button" type="button">
-                            <img src="./images/add-button.svg" class="profile__image-add" alt="Add Button" >
+                            <img src="<%=require('./images/add-button.svg')%>" class="profile__image-add" alt="Add Button" >
                         </button>
     
                     </div>
@@ -109,7 +109,7 @@
             </footer>
         </div>
 
-        <script type="module" src="./pages/index.js" defer></script> 
+        <script type="module" src="./src/index.js" defer></script> 
         <script type="module" src="./components/card.js" defer></script> 
         <script type="module" src="./components/FormValidator.js"></script>
         <script type="module" src="./utils/utils.js" defer></script> 

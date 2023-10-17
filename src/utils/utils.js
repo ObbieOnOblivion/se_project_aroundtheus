@@ -12,12 +12,12 @@ function closeByEscape(evt) {
 
 function openModal(modal){
     modal.classList.add("modal_open");
-    document.addEventListener("keydown", closeByEscape)
+    document.addEventListener("keydown", closeByEscape);
 };
 
 function closeModal(modal){
     modal.classList.remove("modal_open");
-    document.removeEventListener("keydown", closeByEscape)
+    document.removeEventListener("keydown", closeByEscape);
 
 };
 
