@@ -1,4 +1,3 @@
-import { Card } from "./Card";
 
 class section{
     constructor({items, renderer}, container){
@@ -10,12 +9,10 @@ class section{
     }
 
     _renderItems(){
-        let cardList = []
-        this._items.forEach(item =>{
-            const modelCard = new Card(item.name, item.link, this._renderer);
-            cardList.push(modelCard.addCard());
+
+        this._items.forEach((item) =>{
+            this._renderer(item)
         })
-        this._items = cardList;
 
     }
 

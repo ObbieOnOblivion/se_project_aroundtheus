@@ -6,6 +6,7 @@ import "./pages/index.css";
 import {section} from "./components/section.js";
 import {UserInfo} from "./components/UserInfo"
 import { popupWithForm } from "./components/popupWithForm.js";
+import Card from "./components/Card";
 
 
 const galleryList = document.querySelector("#gallery__list");
@@ -63,7 +64,7 @@ let items = [
     const addModalInputDestination = document.querySelector("#place-modal__input_description");
     const editForm = document.forms["edit-form"];
     const placeModalSaveBtn = document.querySelector("#modal__place-save-button")
-    const renderer = document.querySelector("#card-template").content.firstElementChild; // template equivelant section
+    const cardTemplate = document.querySelector("#card-template").content.firstElementChild; // template equivelant section
     const addForm = document.forms["add-form"];
 
     placeModalSaveBtn.disabled = true;
@@ -84,8 +85,14 @@ let items = [
     function handleProfileAddSubmit(event){
         event.preventDefault();
         items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
-        const addSection = new section({items, renderer}, galleryList);
-        addSection.addItem();
+        const addSection = new section({items, renderer: (cardData) =>{
+            let cardList = [];
+            // console.log(cardList);
+            const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
+            cardList.push(modelCard.addCard());
+            // console.log(cardList);
+        }}, galleryList);
+        // addSection.addItem();
         addValidator.disableButton();
         closeModal(profileAddModal);
         event.target.reset();
@@ -120,7 +127,13 @@ let items = [
     
     addPopup.setEventListeners();
     
-    const initialSection = new section({items, renderer}, galleryList)
+    const initialSection = new section({items, renderer: (cardData) =>{
+        const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
+        let cardList = []; //potentially dont need this
+        // console.log(cardList);
+        galleryList.prepend(modelCard.addCard());
+        console.log(galleryList.childElementCount);
+    }}, galleryList)
     initialSection.addItem();
 
 })()

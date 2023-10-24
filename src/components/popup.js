@@ -4,9 +4,7 @@ const modals = document.querySelectorAll(".modal");
 
 export default class Popup{
     constructor({popupSelector}){
-        this.test1 = "#" + popupSelector; 
-        this._popupElement = document.querySelector(this.test1); //starting at line 8:53 when i replace it with the raw string
-        // string being: "#profile-modal__form" it does not return a null value when i run 30:9
+        this._popupElement = document.querySelector(popupSelector) ;
     }
 
     open(){
@@ -27,8 +25,8 @@ export default class Popup{
 
     setEventListeners(){
         document.addEventListener("keydown", (evt) => this._handleEscapeClose(evt)); 
-        console.log(this._popupElement); 
-
+        
+        console.log(this._popupElement); // lets querry selector after 
 
         
         // const modals = document.querySelectorAll(".modal");
