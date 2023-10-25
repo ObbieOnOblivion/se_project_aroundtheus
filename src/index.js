@@ -86,11 +86,8 @@ let items = [
         event.preventDefault();
         items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
         const addSection = new section({items, renderer: (cardData) =>{
-            let cardList = [];
-            // console.log(cardList);
             const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
-            cardList.push(modelCard.addCard());
-            // console.log(cardList);
+            galleryList.prepend(modelCard.addCard());
         }}, galleryList);
         // addSection.addItem();
         addValidator.disableButton();
@@ -129,12 +126,9 @@ let items = [
     
     const initialSection = new section({items, renderer: (cardData) =>{
         const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
-        let cardList = []; //potentially dont need this
-        // console.log(cardList);
         galleryList.prepend(modelCard.addCard());
-        console.log(galleryList.childElementCount);
     }}, galleryList)
-    initialSection.addItem();
+    initialSection.addItem(); // why have the parameter element when where trying to loop over items
 
 })()
 

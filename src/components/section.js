@@ -16,13 +16,10 @@ class section{
 
     }
 
-    addItem(){
+    addItem(element) {
         this._renderItems();
-        this._items.forEach(item => {
-            this._container.prepend(item);
-
-        });
-    };
+        this._container.prepend(element);
+      }
 }
 
 export {section}
