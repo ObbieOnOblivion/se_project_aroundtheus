@@ -8,16 +8,18 @@ class section{
 
     }
 
-    _renderItems(){
+    renderItems(){
 
         this._items.forEach((item) =>{
-            this._renderer(item)
+            this._renderer(item);
+            console.log(item);
+            this.addItem(item);
         })
 
     }
 
     addItem(element) {
-        this._renderItems();
+        // this._renderItems();
         this._container.prepend(element);
       }
 }

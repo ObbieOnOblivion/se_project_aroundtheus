@@ -128,7 +128,7 @@ let items = [
         const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
         galleryList.prepend(modelCard.addCard());
     }}, galleryList)
-    initialSection.addItem(); // why have the parameter element when where trying to loop over items
+    initialSection.renderItems();
 
 })()
 
