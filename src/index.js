@@ -70,6 +70,13 @@ let items = [
     placeModalSaveBtn.disabled = true;
     placeModalSaveBtn.classList.add("transparent");
 
+    const initialSection = new section({items, renderer: (cardData) =>{
+        const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
+        initialSection.addItem(modelCard.addCard())
+    }}, galleryList)
+    initialSection.renderItems();
+    console.log(initialSection._items);
+
     //functions
     
     function handleProfileEditSubmit(event){
@@ -84,12 +91,10 @@ let items = [
 
     function handleProfileAddSubmit(event){
         event.preventDefault();
-        items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
-        const addSection = new section({items, renderer: (cardData) =>{
-            const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
-            galleryList.prepend(modelCard.addCard());
-        }}, galleryList);
-        // addSection.addItem();
+        const items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
+        initialSection._items = items; //change the underscore
+        initialSection.renderItems();
+        console.log(initialSection._items);//
         addValidator.disableButton();
         closeModal(profileAddModal);
         event.target.reset();
@@ -124,11 +129,6 @@ let items = [
     
     addPopup.setEventListeners();
     
-    const initialSection = new section({items, renderer: (cardData) =>{
-        const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
-        galleryList.prepend(modelCard.addCard());
-    }}, galleryList)
-    initialSection.renderItems();
 
 })()
 

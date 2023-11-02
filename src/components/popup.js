@@ -29,14 +29,14 @@ export default class Popup{
         console.log(this._popupElement); // lets querry selector after 
 
         
-        // const modals = document.querySelectorAll(".modal");
-        // modals.forEach(modal => {
-        // const closebtn = modal.querySelector(".modal__close-button");
-        // closebtn.addEventListener("click", () =>{
-        //     closeModal(modal);
-        // });
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach(modal => {
+        const closebtn = modal.querySelector(".modal__close-button");
+        closebtn.addEventListener("click", () =>{
+            closeModal(modal);
+        });
 
-        // })
+        })
 
     }
 }
