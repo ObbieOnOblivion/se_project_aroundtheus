@@ -1,5 +1,5 @@
 
-class section{
+class Section{
     constructor({items, renderer}, container){
         this._items = items;
         this._container = container;
@@ -22,6 +22,6 @@ class section{
       }
 }
 
-export {section}
+export {Section}
 
 

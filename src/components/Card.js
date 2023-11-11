@@ -1,14 +1,14 @@
 
-import {openModal} from "../utils/utils.js";
 import { popupWithImage } from "./PopupWithImage.js";
 
 const imagePopup = new popupWithImage("#picture-modal");
+const pictureModal = document.querySelector("#picture-modal");
 
 class Card{
-    constructor(name , link, template){
+    constructor(name, link, template){
         this._name = name;
         this._link = link;
-        this._template = template.cloneNode(true);
+        this._template = template;
 
     }
 
@@ -22,8 +22,19 @@ class Card{
         cardImageEl.alt = this._name;
 
         cardImageEl.addEventListener("click", () => {
+            const cardElement = this._template;  
+            const modalContent = pictureModal.querySelector("#picture-container");
+            const modalImage = modalContent.querySelector("#picture");
+            const modalImageSubHeader = modalContent.querySelector("#picture-modal-description");
+            const cardImageEl = cardElement.querySelector("#gallery__image");
+            const cardTitleEl = cardElement.querySelector("#gallery__text");
+    
+            modalImage.src = cardImageEl.src;
+            modalImage.alt = this._name;
+            modalImageSubHeader.textContent = cardTitleEl.textContent;
 
-            imagePopup.open(this._name, this._template);
+            imagePopup.open();
+            imagePopup.setEventListeners();
 
         })
 
@@ -61,6 +72,7 @@ class Card{
     
 
     addCard(){
+        this._template = this._template.cloneNode(true)
 
         this._setEventListeners();
 

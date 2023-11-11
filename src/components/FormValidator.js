@@ -23,15 +23,12 @@ class FormValidator {
     }
 
     _toggleButtonState(inputElements){
-        let foundInvalid = false;
-        
-        inputElements.forEach((inputElement) =>{
-            if (!inputElement.validity.valid){
-                foundInvalid = true;
-            }
-        })
-    
-        if(foundInvalid){
+
+        this._checkFormValidity  = () => inputElements.every(input => input.validity.valid);
+
+        const isFormValid = this._checkFormValidity(); // note, that it checks if form is valid 
+
+        if(!isFormValid){
             this.disableButton();
 
         }else{
@@ -88,16 +85,4 @@ class FormValidator {
 
 }
 
-const configuration = {
-    formSelector: ".modal__container",
-    inputSelector: ".modal__input",
-    submitButtonSelector: ".modal__save-button", 
-    inactiveButtonClass: "transparent",
-    inputErrorClass: "popup__input_type_error",
-    errorClass: "popup__error_visible"
-};
-const editForm = document.forms["edit-form"];
-const addForm = document.forms["add-form"];
-const editValidator = new FormValidator(configuration, editForm);
-const addValidator = new FormValidator(configuration, addForm);
-export { FormValidator, editValidator, addValidator };
+export { FormValidator };

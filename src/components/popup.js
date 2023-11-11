@@ -1,42 +1,39 @@
 
-import { closeModal } from "../utils/utils";
-const modals = document.querySelectorAll(".modal");
-
 export default class Popup{
     constructor({popupSelector}){
-        this._popupElement = document.querySelector(popupSelector) ;
+        this._popupElement = document.querySelector(popupSelector);
     }
 
     open(){
         this._popupElement.classList.add("modal_open");
+        document.addEventListener("keydown", (evt) => this._handleEscapeClose(evt)); 
+
     }
 
     close(){
         this._popupElement.classList.remove("modal_open");
+        document.removeEventListener("keydown", (evt) => this._handleEscapeClose(evt)); 
+
     }
 
     _handleEscapeClose(evt){
         if (evt.key === "Escape"){
-            modals.forEach(modal => {
-                modal.classList.remove("modal_open");
-            })
+            this.close();
         }
     }
 
     setEventListeners(){
-        document.addEventListener("keydown", (evt) => this._handleEscapeClose(evt)); 
-        
-        console.log(this._popupElement); // lets querry selector after 
 
-        
-        const modals = document.querySelectorAll(".modal");
-        modals.forEach(modal => {
-        const closebtn = modal.querySelector(".modal__close-button");
-        closebtn.addEventListener("click", () =>{
-            closeModal(modal);
-        });
-
+        this._popupElement.addEventListener("click", (evt)=>{
+            if (evt.target.classList.contains("modal")){
+                this.close();
+            }
         })
+
+        const closebtn = this._popupElement.querySelector(".modal__close-button") // lets querry selector after 
+        closebtn.addEventListener("click", () =>{
+            this.close();
+        });
 
     }
 }

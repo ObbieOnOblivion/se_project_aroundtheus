@@ -2,34 +2,51 @@ import Popup from "./popup";
 
 class popupWithForm extends Popup{
     constructor(popupSelector, handleFormSubmit){
-        super({popupSelector}); //how to properly grab 
+        super({popupSelector});
         this._handleFormSubmit = handleFormSubmit;
-        this._form = document.forms[popupSelector];
+        this._form = document.querySelector(popupSelector).querySelector("form");
+        this.popup = document.querySelector(popupSelector);
+
     };
 
     _getInputValues(){
-        let inputValues = {}
-        this._form.childNodes.forEach(element =>{
-            if (element.id){
-                let nameElement = '';
-                let descriptionElement = '';
-                if(element.id.includes("modal__input_name") && element.classList.contains("modal__input")){
-                    nameElement = element.value;
-                }
-                if(element.id.includes("modal__input_name") && element.classList.contains("modal__input")){
-                    descriptionElement = element.value;
-                }
-                inputValues[nameElement] = descriptionElement; 
-            }
 
-        })
-        return(inputValues);
+        
+        // const inputValues = {}
+        // console.log(this._form)
+        // this._form.childNodes.forEach(element =>{
+        //     if (element.id){
+        //         let nameElement = '';
+        //         let descriptionElement = '';
+        //         if(element.id.includes("modal__input_name") && element.classList.contains("modal__input")){
+        //             nameElement = element.value;
+        //         }
+        //         if(element.id.includes("modal__input_name") && element.classList.contains("modal__input")){
+        //             descriptionElement = element.value;
+        //         }
+        //         inputValues[nameElement] = descriptionElement; 
+        //     }
+
+        // })
+        // return(inputValues);
+
+        const inputList = [...this.popup.querySelectorAll('input')]
+        const inputValues= {};
+
+        
+        for (const input of inputList) {
+            console.log(input.id) //input.name does not work
+            inputValues[inputList[0]] = inputList[1];
+        }
+        console.log(inputList);
+
+        
+        return inputValues;
     }
 
     close(){
         super.close();
         this._form.reset(); 
-        console.log("reset fired")
     }
 
     setEventListeners(){

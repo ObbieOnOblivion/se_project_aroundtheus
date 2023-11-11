@@ -3,9 +3,9 @@ const profileDescription = profile.querySelector("#profile__description");
 const profileEditModal = document.querySelector("#profile-modal");
 
 class UserInfo{
-    constructor(name, job){
-        this._name = name;
-        this._job = job;
+    constructor(){
+        this._name = "";
+        this._job = "";
     }
     getUserInfo(){
         this._name = profileEditModal.querySelector("#profile-modal__input_name");
