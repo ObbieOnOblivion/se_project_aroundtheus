@@ -5,7 +5,7 @@ import {FormValidator} from "./components/FormValidator"
 import "./pages/index.css";
 import {Section} from "./components/section.js";
 import {UserInfo} from "./components/UserInfo"
-import { popupWithForm } from "./components/popupWithForm.js";
+import { PopupWithForm } from "./components/PopupWithForm.js";
 import Card from "./components/Card";
 import { popupWithImage } from "./components/PopupWithImage";
 
@@ -82,8 +82,8 @@ const items = [
     const cardTemplate = document.querySelector("#card-template").content.firstElementChild;
     const pictureModal = document.querySelector("#picture-modal");
 
-    const editPopup = new popupWithForm(`#${editForm.parentElement.id}`, handleProfileEditSubmit);
-    const addPopup = new popupWithForm(`#${addForm.parentElement.id}`, handleProfileAddSubmit);
+    const editPopup = new PopupWithForm(`#${editForm.parentElement.id}`, handleProfileEditSubmit);
+    const addPopup = new PopupWithForm(`#${addForm.parentElement.id}`, handleProfileAddSubmit);
 
     editPopup._getInputValues();
     addPopup._getInputValues();
