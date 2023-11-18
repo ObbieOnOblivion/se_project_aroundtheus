@@ -7,7 +7,7 @@ import {Section} from "./components/section.js";
 import {UserInfo} from "./components/UserInfo"
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import Card from "./components/Card";
-import { popupWithImage } from "./components/PopupWithImage";
+import { PopupWithImage } from "./components/PopupWithImage";
 
 
 const galleryList = document.querySelector("#gallery__list");
@@ -84,55 +84,68 @@ const items = [
 
     const editPopup = new PopupWithForm(`#${editForm.parentElement.id}`, handleProfileEditSubmit);
     const addPopup = new PopupWithForm(`#${addForm.parentElement.id}`, handleProfileAddSubmit);
+    const userInfo = new UserInfo(profileName, profileDescription);
+    const savedInfo = new UserInfo(modalInputName, modalInputDescription);
 
-    editPopup._getInputValues();
-    addPopup._getInputValues();
-
-    placeModalSaveBtn.disabled = true;
-    placeModalSaveBtn.classList.add("transparent");
-
-    const initialSection = new Section({items, renderer: (cardData) =>{
+    const cardsSection = new Section({items, renderer: (cardData) =>{
         const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
         const modelImage = modelCard.addCard().querySelector("img");
-        //question involvs commented code bellow; 
+        //question involvs line 93-96
         // console.log(modelImage)
-        // modelImage.addEventListener("click", ()=>{
-        //     //add image popup eventlisteners 
-        // }
-        // )
-        initialSection.addItem(modelCard.addCard())
+        modelImage.addEventListener("click", ()=>{
+            console.log("event will not trigger")
+        });
+        
+        cardsSection.addItem(modelCard.addCard())
     }}, galleryList)
-    initialSection.renderItems();
-    console.log(initialSection._items);
+    cardsSection.renderItems();
 
     //functions
     
     function handleProfileEditSubmit(event){
         event.preventDefault();
-        const userInfo = new UserInfo()
-        userInfo.getUserInfo();
-        userInfo.setUserInfo();
-        profileName.textContent = modalInputName.value;
-        profileDescription.textContent = modalInputDescription.value;
+        profileName.textContent = savedInfo.getUserInfo().name;
+        profileDescription.textContent = savedInfo.getUserInfo().about;
+        console.log(savedInfo.getUserInfo().name);
+
+        // userInfo.setUserInfo(userInfo.getUserInfo);
+        // userInfo.setUserInfo();
+        // profileName.textContent = modalInputName.value;
+        // profileDescription.textContent = modalInputDescription.value;
         editPopup.close()
     };
 
     function handleProfileAddSubmit(event){
         event.preventDefault();
-        const items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
-        initialSection._items = items; //change the underscore
-        initialSection.renderItems();
-        addValidator.disableButton();
-        addPopup.close();
-        event.target.reset();
+        // const items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
+        // initialSection._items = items; //change the underscore
+        // initialSection.renderItems();
 
+        const modelCard = new Card(String(addModalInputName.value), String(addModalInputDestination.value), cardTemplate);
+        console.log(modelCard.addCard());
+        cardsSection.addItem(modelCard.addCard())
+
+        addPopup.close();
     }
     
     //event listeners
     
     profileEditButton.addEventListener("click", () => {
-        modalInputName.value = profileName.textContent;
-        modalInputDescription.value = profileDescription.textContent;
+        console.log(userInfo.getUserInfo())
+        // modalInputName.value = profileName.textContent;
+        // modalInputDescription.value = profileDescription.textContent;
+
+
+        modalInputName.value = userInfo.getUserInfo().name;
+        modalInputDescription.value = userInfo.getUserInfo().about;
+
+        // profileName.textContent = savedInfo.getUserInfo.name;
+        // savedInfo.setUserInfo(userInfo.getUserInfo())
+        // userInfo.getUserInfo()
+         
+
+        // userInfo.getUserInfo(profileName.textContent, profileDescription.textContent)
+        // userInfo.setUserInfo(modalInputName.value, modalInputDescription.value)
         // openModal(profileEditModal);
         editPopup.open();
     });
@@ -140,6 +153,7 @@ const items = [
     profileAddButton.addEventListener("click", () =>{
         // openModal(profileAddModal);
         addPopup.open();
+        addValidator.disableButton();
     });
 
     editPopup.setEventListeners();

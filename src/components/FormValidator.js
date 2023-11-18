@@ -4,6 +4,9 @@ class FormValidator {
     constructor(options, formElement){
         this._options = options;
         this._formElement = formElement;
+        this._checkFormValidity  = () => this._inputElements.every(input => input.validity.valid);
+        this._inputElements = NaN;
+
     }
 
     disableButton(){
@@ -23,15 +26,16 @@ class FormValidator {
     }
 
     _toggleButtonState(inputElements){
+        this._inputElements = inputElements;
+        this._checkFormValidity;
 
-        this._checkFormValidity  = () => inputElements.every(input => input.validity.valid);
-
-        const isFormValid = this._checkFormValidity(); // note, that it checks if form is valid 
+        const isFormValid = this._checkFormValidity();
 
         if(!isFormValid){
             this.disableButton();
 
-        }else{
+        }
+        else{
             this.activateButton();
     
         }

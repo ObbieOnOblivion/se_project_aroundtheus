@@ -1,7 +1,7 @@
 
-import { popupWithImage } from "./PopupWithImage.js";
+import { PopupWithImage } from "./PopupWithImage.js";
 
-const imagePopup = new popupWithImage("#picture-modal");
+const imagePopup = new PopupWithImage("#picture-modal");
 const pictureModal = document.querySelector("#picture-modal");
 
 class Card{
@@ -33,8 +33,11 @@ class Card{
             modalImage.alt = this._name;
             modalImageSubHeader.textContent = cardTitleEl.textContent;
 
-            imagePopup.open();
-            imagePopup.setEventListeners();
+            //here...
+
+
+            // imagePopup.open();
+            // imagePopup.setEventListeners();
 
         })
 
