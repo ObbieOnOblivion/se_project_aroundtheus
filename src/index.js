@@ -1,9 +1,7 @@
 
 import {FormValidator} from "./components/FormValidator"
-// import {openModal} from "./utils/utils.js";
-// import {closeModal} from "./utils/utils.js";
 import "./pages/index.css";
-import {Section} from "./components/section.js";
+import {Section} from "./components/Section.js";
 import {UserInfo} from "./components/UserInfo"
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import Card from "./components/Card";
@@ -81,49 +79,34 @@ const items = [
     const placeModalSaveBtn = document.querySelector("#modal__place-save-button")
     const cardTemplate = document.querySelector("#card-template").content.firstElementChild;
     const pictureModal = document.querySelector("#picture-modal");
+    const imagePopup = new PopupWithImage("#picture-modal");
+
 
     const editPopup = new PopupWithForm(`#${editForm.parentElement.id}`, handleProfileEditSubmit);
     const addPopup = new PopupWithForm(`#${addForm.parentElement.id}`, handleProfileAddSubmit);
     const userInfo = new UserInfo(profileName, profileDescription);
-    const savedInfo = new UserInfo(modalInputName, modalInputDescription);
+    const userData = userInfo.getUserInfo();
 
-    const cardsSection = new Section({items, renderer: (cardData) =>{
-        const modelCard = new Card(cardData.name, cardData.link, cardTemplate);
-        const modelImage = modelCard.addCard().querySelector("img");
-        //question involvs line 93-96
-        // console.log(modelImage)
-        modelImage.addEventListener("click", ()=>{
-            console.log("event will not trigger")
-        });
-        
-        cardsSection.addItem(modelCard.addCard())
-    }}, galleryList)
-    cardsSection.renderItems();
+    imagePopup.setEventListeners();
 
     //functions
+
+    function createCard(name, description, template){
+        const modelCard = new Card(name, description, template);
+        cardsSection.addItem(modelCard.addCard())
+
+    }
     
     function handleProfileEditSubmit(event){
         event.preventDefault();
-        profileName.textContent = savedInfo.getUserInfo().name;
-        profileDescription.textContent = savedInfo.getUserInfo().about;
-        console.log(savedInfo.getUserInfo().name);
-
-        // userInfo.setUserInfo(userInfo.getUserInfo);
-        // userInfo.setUserInfo();
-        // profileName.textContent = modalInputName.value;
-        // profileDescription.textContent = modalInputDescription.value;
+        userInfo.setUserInfo({name: modalInputName.value, about: modalInputDescription.value})
         editPopup.close()
     };
 
     function handleProfileAddSubmit(event){
         event.preventDefault();
-        // const items = [{name: String(addModalInputName.value), link: String(addModalInputDestination.value)}];
-        // initialSection._items = items; //change the underscore
-        // initialSection.renderItems();
 
-        const modelCard = new Card(String(addModalInputName.value), String(addModalInputDestination.value), cardTemplate);
-        console.log(modelCard.addCard());
-        cardsSection.addItem(modelCard.addCard())
+        createCard(addModalInputName.value, addModalInputDestination.value, cardTemplate)
 
         addPopup.close();
     }
@@ -131,27 +114,11 @@ const items = [
     //event listeners
     
     profileEditButton.addEventListener("click", () => {
-        console.log(userInfo.getUserInfo())
-        // modalInputName.value = profileName.textContent;
-        // modalInputDescription.value = profileDescription.textContent;
 
-
-        modalInputName.value = userInfo.getUserInfo().name;
-        modalInputDescription.value = userInfo.getUserInfo().about;
-
-        // profileName.textContent = savedInfo.getUserInfo.name;
-        // savedInfo.setUserInfo(userInfo.getUserInfo())
-        // userInfo.getUserInfo()
-         
-
-        // userInfo.getUserInfo(profileName.textContent, profileDescription.textContent)
-        // userInfo.setUserInfo(modalInputName.value, modalInputDescription.value)
-        // openModal(profileEditModal);
         editPopup.open();
     });
 
     profileAddButton.addEventListener("click", () =>{
-        // openModal(profileAddModal);
         addPopup.open();
         addValidator.disableButton();
     });
@@ -159,6 +126,12 @@ const items = [
     editPopup.setEventListeners();
     
     addPopup.setEventListeners();
+
+    const cardsSection = new Section({items, renderer: (cardData) =>{
+        createCard(cardData.name, cardData.link, cardTemplate);
+    }}, galleryList)
+    cardsSection.renderItems();
+
 
 })()
 

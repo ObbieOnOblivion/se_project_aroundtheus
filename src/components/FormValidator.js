@@ -4,8 +4,8 @@ class FormValidator {
     constructor(options, formElement){
         this._options = options;
         this._formElement = formElement;
-        this._checkFormValidity  = () => this._inputElements.every(input => input.validity.valid);
         this._inputElements = NaN;
+        this._checkFormValidity  = () => this._inputElements.forEach(input => input.validity.valid);
 
     }
 
@@ -25,11 +25,18 @@ class FormValidator {
         saveButton.disabled = false;
     }
 
-    _toggleButtonState(inputElements){
-        this._inputElements = inputElements;
-        this._checkFormValidity;
-
-        const isFormValid = this._checkFormValidity();
+    _toggleButtonState(inputElements){ 
+        
+        function checkFormValidity(elements){
+            if (elements[0].validity.valid && elements[1].validity.valid){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        
+        const isFormValid = checkFormValidity(inputElements);
 
         if(!isFormValid){
             this.disableButton();

@@ -5,6 +5,10 @@ class PopupWithImage extends Popup{
         super({popupSelector})
     };
 
+    open(){ //question here 
+        super.open({})
+    }
+
 };
 
 export {PopupWithImage}

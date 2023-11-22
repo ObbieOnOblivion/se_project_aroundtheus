@@ -13,13 +13,11 @@ class Card{
     }
 
     _addImageFunctionality(){
-        const cardElement = this._template;  
-        const cardImageEl = cardElement.querySelector("#gallery__image");
-        const cardTitleEl = cardElement.querySelector("#gallery__text");
 
-        cardTitleEl.textContent = this._name; 
-        cardImageEl.src = this._link;
-        cardImageEl.alt = this._name;
+        const cardElement = this._template;  
+
+        const cardImageEl = cardElement.querySelector("#gallery__image");
+
 
         cardImageEl.addEventListener("click", () => {
             const cardElement = this._template;  
@@ -33,11 +31,7 @@ class Card{
             modalImage.alt = this._name;
             modalImageSubHeader.textContent = cardTitleEl.textContent;
 
-            //here...
-
-
-            // imagePopup.open();
-            // imagePopup.setEventListeners();
+            pictureModal.classList.add("modal_open");
 
         })
 
@@ -77,6 +71,13 @@ class Card{
     addCard(){
         this._template = this._template.cloneNode(true)
 
+        const cardElement = this._template;  
+        const cardImageEl = cardElement.querySelector("#gallery__image");
+        const cardTitleEl = cardElement.querySelector("#gallery__text");
+
+        cardTitleEl.textContent = this._name; 
+        cardImageEl.src = this._link;
+        cardImageEl.alt = this._name;
         this._setEventListeners();
 
         return (this._template);

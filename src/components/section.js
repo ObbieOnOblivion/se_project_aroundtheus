@@ -17,7 +17,6 @@ class Section{
     }
 
     addItem(element) {
-        // this.renderItems();
         this._container.prepend(element);
       }
 }
