@@ -30,7 +30,7 @@ export default class Popup{
             }
         })
 
-        const closebtn = this._popupElement.querySelector(".modal__close-button") // lets querry selector after 
+        const closebtn = this._popupElement.querySelector(".modal__close-button")
         closebtn.addEventListener("click", () =>{
             this.close();
         });
