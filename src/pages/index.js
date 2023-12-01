@@ -1,6 +1,6 @@
 
 import {FormValidator} from "../components/FormValidator"
-import "./pages/index.css";
+import "./index.css";
 import {Section} from "../components/Section.js";
 import {UserInfo} from "../components/UserInfo"
 import { PopupWithForm } from "../components/PopupWithForm.js";
@@ -110,6 +110,10 @@ import { PopupWithImage } from "../components/PopupWithImage";
     //event listeners
     
     profileEditButton.addEventListener("click", () => {
+        // we need to fill the form values from 
+
+        editPopup.setPreviewedValues(profileName.textContent, profileDescription.textContent)
+
 
         editPopup.open();
     });
