@@ -95,14 +95,14 @@ import { PopupWithImage } from "../components/PopupWithImage";
         cardsSection.addItem(modelCard.addCard())
     }
     
-    function handleProfileEditSubmit(event){
-        event.preventDefault();
+    function handleProfileEditSubmit(name, description){
+        // event.preventDefault();
         userInfo.setUserInfo({name: modalInputName.value, about: modalInputDescription.value})
         editPopup.close()
     };
 
-    function handleProfileAddSubmit(event){
-        event.preventDefault();
+    function handleProfileAddSubmit(name, destination){
+        // event.preventDefault();
         createCard(addModalInputName.value, addModalInputDestination.value, cardTemplate)
         addPopup.close();
     }
@@ -110,11 +110,7 @@ import { PopupWithImage } from "../components/PopupWithImage";
     //event listeners
     
     profileEditButton.addEventListener("click", () => {
-        // we need to fill the form values from 
-
         editPopup.setPreviewedValues(profileName.textContent, profileDescription.textContent)
-
-
         editPopup.open();
     });
 
