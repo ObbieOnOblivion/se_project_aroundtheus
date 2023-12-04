@@ -6,7 +6,6 @@ class PopupWithForm extends Popup{
         this._handleFormSubmit = handleFormSubmit;
         this._form = document.querySelector(popupSelector).querySelector("form");
         this._inputList = [...this._popupElement.querySelectorAll('input')];
-
     };
 
     setPreviewedValues(name, description){
@@ -20,7 +19,6 @@ class PopupWithForm extends Popup{
                 break;
                 case "traveler-description":
                     input.value = description;
-                    
               }
               
         })
@@ -29,14 +27,13 @@ class PopupWithForm extends Popup{
 
     _getInputValues(){
 
-        const inputValues= {};
+        const inputValues = {};
 
+        this._inputList.forEach(input => {
+            inputValues[input.name] = input.value
+        })
         
-        for (const input of this._inputList) {
-            inputValues[input.name] = input.value;
-        } 
-        
-        return this._inputList[0];
+        return inputValues;
     }
 
     close(){
@@ -46,7 +43,8 @@ class PopupWithForm extends Popup{
 
     setEventListeners(){
         super.setEventListeners();
-        this._form.addEventListener("submit", this._handleFormSubmit);
+        this._form.addEventListener("submit", this._handleFormSubmit(this._getInputValues())); 
+
     }
 
 };

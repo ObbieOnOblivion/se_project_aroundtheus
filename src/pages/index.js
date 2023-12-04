@@ -83,6 +83,7 @@ import { PopupWithImage } from "../components/PopupWithImage";
     const addPopup = new PopupWithForm(`#${addForm.parentElement.id}`, handleProfileAddSubmit);
     const userInfo = new UserInfo(profileName, profileDescription);
 
+
     imagePopup.setEventListeners();
 
     //functions
@@ -96,14 +97,12 @@ import { PopupWithImage } from "../components/PopupWithImage";
     }
     
     function handleProfileEditSubmit(name, description){
-        // event.preventDefault();
-        userInfo.setUserInfo({name: modalInputName.value, about: modalInputDescription.value})
+        userInfo.setUserInfo({name: name, about: description});
         editPopup.close()
     };
 
-    function handleProfileAddSubmit(name, destination){
-        // event.preventDefault();
-        createCard(addModalInputName.value, addModalInputDestination.value, cardTemplate)
+    function handleProfileAddSubmit(name, description){
+        createCard(name, description, cardTemplate); 
         addPopup.close();
     }
     
