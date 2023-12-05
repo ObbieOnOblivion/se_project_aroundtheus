@@ -4,18 +4,12 @@ class FormValidator {
     constructor(options, formElement){
         this._options = options;
         this._formElement = formElement;
-        this._inputElements = NaN;
 
     }
 
-    _checkFormValidity(elements){
-        if (elements[0].validity.valid && elements[1].validity.valid){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    _checkFormValidity(elements) { 
+        return elements.every(element => element.validity.valid);
+      } 
 
     disableButton(){
         const inactiveButtonClass = this._options.inactiveButtonClass;
@@ -89,9 +83,9 @@ class FormValidator {
 
     enableValidation(){
 
-        this._formElement.addEventListener("submit", (e)=> {
-            e.preventDefault();
-        });
+        // this._formElement.addEventListener("submit", (e)=> {
+        //     e.preventDefault();
+        // });
         this._setEventListeners();
 
     }
