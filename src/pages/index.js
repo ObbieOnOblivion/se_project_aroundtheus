@@ -69,6 +69,7 @@ import { PopupWithImage } from "../components/PopupWithImage";
     inputErrorClass: "popup__input_type_error",
     errorClass: "popup__error_visible",
   };
+
   const editValidator = new FormValidator(configuration, editForm);
   const addValidator = new FormValidator(configuration, addForm);
 
@@ -80,17 +81,7 @@ import { PopupWithImage } from "../components/PopupWithImage";
   const profileAddButton = profile.querySelector("#profile__add_button");
   const profileName = profile.querySelector("#profile__name");
   const profileDescription = profile.querySelector("#profile__description");
-  const profileEditModal = document.querySelector("#profile-modal");
-  const modalInputName = profileEditModal.querySelector(
-    "#profile-modal__input_name"
-  );
-  const addModalInputName = document.querySelector("#place-modal__input_name");
-  const modalInputDescription = profileEditModal.querySelector(
-    "#profile-modal__input_description"
-  );
-  const addModalInputDestination = document.querySelector(
-    "#place-modal__input_description"
-  );
+
   const imagePopup = new PopupWithImage("#picture-modal");
 
   const editPopup = new PopupWithForm(
@@ -112,13 +103,13 @@ import { PopupWithImage } from "../components/PopupWithImage";
     cardsSection.addItem(modelCard.addCard());
   }
 
-  function handleProfileEditSubmit({ travelerName, travelerDescription }) {
-    userInfo.setUserInfo({ name: travelerName, about: travelerDescription });
+  function handleProfileEditSubmit({ name, description }) {
+    userInfo.setUserInfo({ name: name, about: description });
     editPopup.close();
   }
 
-  function handleProfileAddSubmit({ travelerName, travelerDescription }) {
-    createCard(travelerName, travelerDescription, cardTemplate);
+  function handleProfileAddSubmit({ name, description }) {
+    createCard(name, description, cardTemplate);
     addPopup.close();
   }
 
@@ -126,8 +117,8 @@ import { PopupWithImage } from "../components/PopupWithImage";
 
   profileEditButton.addEventListener("click", () => {
     editPopup.setPreviewedValues({
-      name: profileName.textContent,
-      description: profileDescription.textContent,
+      name: profileName.innerText,
+      description: profileDescription.innerText,
     });
     editPopup.open();
   });

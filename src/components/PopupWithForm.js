@@ -8,18 +8,11 @@ class PopupWithForm extends Popup {
     this._inputList = [...this._popupElement.querySelectorAll("input")];
   }
 
-  setPreviewedValues({ name, description }) {
+  setPreviewedValues(values) {
     this._inputList.forEach((input) => {
-      switch (input.name) {
-        case "travelerName":
-          input.value = name;
-          break;
-        case "travelerDescription":
-          input.value = description;
-      }
+      input.value = values[input.name];
     });
   }
-
   _getInputValues() {
     const inputValues = {};
 
