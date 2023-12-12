@@ -4,7 +4,6 @@ class Api {
     this.aboutElement = NaN; // set to 
     this.baseUrl = baseUrl;
     this.headers = headers;
-    this._cardInfo = NaN;
   }
 
   getInitialCards() {

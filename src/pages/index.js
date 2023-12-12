@@ -118,7 +118,7 @@ const api = new Api({
 
     api.addCardInfo(name, description, createCard);
     // console.log(api._cardInfo)
-    // api.getCardInfo();  // am i using unnessecary requests why returning 30 items 
+    api.getCardInfo();  // am i using unnessecary requests why returning 30 items 
     
   }
 
