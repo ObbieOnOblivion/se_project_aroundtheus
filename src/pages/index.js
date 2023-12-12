@@ -1,10 +1,22 @@
 import { FormValidator } from "../components/FormValidator";
 import "./index.css";
 import { Section } from "../components/Section.js";
-import { UserInfo } from "../components/UserInfo";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import Card from "../components/Card";
 import { PopupWithImage } from "../components/PopupWithImage";
+import { Api } from "../components/Api";
+
+
+
+
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: {
+    authorization: "9b29ae94-bb6f-470b-bccd-5f1bdf13a16a",
+    "Content-Type": "application/json"
+  }});
+
+
 
 (function displayCards() {
   // Elements
@@ -73,6 +85,8 @@ import { PopupWithImage } from "../components/PopupWithImage";
   const editValidator = new FormValidator(configuration, editForm);
   const addValidator = new FormValidator(configuration, addForm);
 
+
+
   editValidator.enableValidation();
   addValidator.enableValidation();
 
@@ -92,20 +106,27 @@ import { PopupWithImage } from "../components/PopupWithImage";
     `#${addForm.parentElement.id}`,
     handleProfileAddSubmit
   );
-  const userInfo = new UserInfo(profileName, profileDescription);
 
   imagePopup.setEventListeners();
 
   //functions
 
   function createCard(name, description, template) {
-    const modelCard = new Card(name, description, template, imageClickHandler);
-    cardsSection.addItem(modelCard.addCard());
+    const createCard = (name, description, option1 = template, option2 = imageClickHandler ) =>{
+    const modelCard = new Card(name, description, option1, option2);
+    cardsSection.addItem(modelCard.addCard());}
+
+    api.addCardInfo(name, description, createCard);
+    // console.log(api._cardInfo)
+    // api.getCardInfo();  // am i using unnessecary requests why returning 30 items 
+    
   }
 
-  function handleProfileEditSubmit({ name, description }) {
-    userInfo.setUserInfo({ name: name, about: description });
+  function handleProfileEditSubmit(inputElements) {
     editPopup.close();
+    api.aboutElement = profileDescription;
+    api.nameElement = profileName
+    api.setUserInfo(inputElements["name"], inputElements["description"], profileName, profileDescription); //change the name
   }
 
   function handleProfileAddSubmit({ name, description }) {
