@@ -5,18 +5,15 @@ import { PopupWithForm } from "../components/PopupWithForm.js";
 import Card from "../components/Card";
 import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
-
-
-
+import { UserInfo } from "../components/UserInfo";
 
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
     authorization: "9b29ae94-bb6f-470b-bccd-5f1bdf13a16a",
-    "Content-Type": "application/json"
-  }});
-
-
+    "Content-Type": "application/json",
+  },
+});
 
 (function displayCards() {
   // Elements
@@ -85,8 +82,6 @@ const api = new Api({
   const editValidator = new FormValidator(configuration, editForm);
   const addValidator = new FormValidator(configuration, addForm);
 
-
-
   editValidator.enableValidation();
   addValidator.enableValidation();
 
@@ -95,6 +90,7 @@ const api = new Api({
   const profileAddButton = profile.querySelector("#profile__add_button");
   const profileName = profile.querySelector("#profile__name");
   const profileDescription = profile.querySelector("#profile__description");
+  const user = new UserInfo(profileName, profileDescription);
 
   const imagePopup = new PopupWithImage("#picture-modal");
 
@@ -112,21 +108,29 @@ const api = new Api({
   //functions
 
   function createCard(name, description, template) {
-    const createCard = (name, description, option1 = template, option2 = imageClickHandler ) =>{
-    const modelCard = new Card(name, description, option1, option2);
-    cardsSection.addItem(modelCard.addCard());}
+    // change the name of option1 and option2;
+    const createCard = (
+      name,
+      description,
+      option1 = template,
+      option2 = imageClickHandler
+    ) => {
+      const modelCard = new Card(name, description, option1, option2);
+      cardsSection.addItem(modelCard.addCard());
+    };
 
     api.addCardInfo(name, description, createCard);
-    // console.log(api._cardInfo)
-    api.getCardInfo();  // am i using unnessecary requests why returning 30 items 
-    
+    api.getCardInfo(); // am i using unnessecary resources, why returning 30 items
   }
 
   function handleProfileEditSubmit(inputElements) {
     editPopup.close();
-    api.aboutElement = profileDescription;
-    api.nameElement = profileName
-    api.setUserInfo(inputElements["name"], inputElements["description"], profileName, profileDescription); //change the name
+
+    api
+      .setUserInfo(inputElements.name, inputElements.description)
+      .then((result) => {
+        user.setUserInfo({ name: result.name, about: result.about });
+      });
   }
 
   function handleProfileAddSubmit({ name, description }) {
