@@ -6,6 +6,7 @@ import Card from "../components/Card";
 import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
 import { UserInfo } from "../components/UserInfo";
+import { confirmationPopup } from "../components/confirmationPopup";
 
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -15,10 +16,27 @@ const api = new Api({
   },
 });
 
+function toggleButton(name, link){ // better name maybe
+  api.getCardInfo(name, link, false ,true)
+}
+
+function triggerConfirmation(deleteCard, name, link){ // needs help
+  const apiDelete = () =>{
+    api.getCardInfo(name, link, true); //should be named getCardId or delete card
+  }
+  const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
+  confirmPopup.open();
+  confirmPopup.setEventListeners();
+
+  
+  // api.deleteCard(name, link);
+}
+
 (function displayCards() {
   // Elements
   const imageClickHandler = ({ name, link }) => {
     imagePopup.open({ name, link });
+    api.toggleButtonState;
   };
   const cardTemplate =
     document.querySelector("#card-template").content.firstElementChild;
@@ -107,7 +125,7 @@ const api = new Api({
 
   //functions
 
-  function createCard(name, description, template) {
+  function createCard(name, description, template) { // is the point to create the card info once and grab from that db
     // change the name of option1 and option2;
     const createCard = (
       name,
@@ -115,7 +133,7 @@ const api = new Api({
       option1 = template,
       option2 = imageClickHandler
     ) => {
-      const modelCard = new Card(name, description, option1, option2);
+      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleButton );
       cardsSection.addItem(modelCard.addCard());
     };
 
@@ -157,3 +175,6 @@ const api = new Api({
 
   addPopup.setEventListeners();
 })();
+
+// api.getCardInfo("Yosemite Valley", "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg");
+

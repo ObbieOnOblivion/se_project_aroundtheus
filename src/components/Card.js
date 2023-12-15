@@ -1,9 +1,11 @@
 class Card {
-  constructor(name, link, template, imageClickHandler) {
+  constructor(name, link, template, imageClickHandler, deleteHandler, toggleButton) {
     this._name = name;
     this._link = link;
     this._template = template;
     this._imageClickHandler = imageClickHandler;
+    this._deleteHandler = deleteHandler; 
+    this.toggleButton = toggleButton; 
   }
 
   _addImageFunctionality() {
@@ -18,22 +20,34 @@ class Card {
     });
   }
 
-  _addLikeFunctionality() {
+  _addLikeFunctionality() { 
     const likeButton = this._template.querySelector("#gallery__like-button");
 
     likeButton.addEventListener("click", () => {
-      likeButton.classList.toggle("gallery__like-button_liked");
+      likeButton.classList.toggle("gallery__like-button_liked"); //pass this to the isLike in Api class 
+      this.toggleButton(this._name, this._link);
+
     });
+
+    console.log(this._name)
+
   }
 
   _addDeleteFunctionality() {
     const deleteButton = this._template.querySelector("#gallery__trash");
     deleteButton.addEventListener("click", () => {
-      const cardElement = deleteButton.closest(".gallery__card");
-      if (cardElement) {
-        cardElement.remove();
+      const preformDeleteAction = () =>{
+        const cardElement = deleteButton.closest(".gallery__card");
+        if (cardElement) {
+          cardElement.remove();
+        }
       }
+      this._deleteHandler(preformDeleteAction, this._name, this._link)
+
+
     });
+
+    // get the id of the card i want here    hence i cant even rely on my get method with 
   }
 
   _setEventListeners() {
