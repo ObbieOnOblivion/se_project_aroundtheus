@@ -5,7 +5,7 @@ class Card {
     this._template = template;
     this._imageClickHandler = imageClickHandler;
     this._deleteHandler = deleteHandler; 
-    this.toggleButton = toggleButton; 
+    this._toggleButton = toggleButton; 
   }
 
   _addImageFunctionality() {
@@ -20,17 +20,16 @@ class Card {
     });
   }
 
+
   _addLikeFunctionality() { 
     const likeButton = this._template.querySelector("#gallery__like-button");
-
+    
     likeButton.addEventListener("click", () => {
+
       likeButton.classList.toggle("gallery__like-button_liked"); //pass this to the isLike in Api class 
-      this.toggleButton(this._name, this._link);
+      this._toggleButton(this._name, this._link);
 
     });
-
-    console.log(this._name)
-
   }
 
   _addDeleteFunctionality() {
@@ -46,8 +45,6 @@ class Card {
 
 
     });
-
-    // get the id of the card i want here    hence i cant even rely on my get method with 
   }
 
   _setEventListeners() {

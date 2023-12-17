@@ -7,36 +7,49 @@ import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
 import { UserInfo } from "../components/UserInfo";
 import { confirmationPopup } from "../components/confirmationPopup";
+import { avatarPopup } from "../components/AvatarPopup";
 
-const api = new Api({
-  baseUrl: "https://around-api.en.tripleten-services.com/v1",
-  headers: {
-    authorization: "9b29ae94-bb6f-470b-bccd-5f1bdf13a16a",
-    "Content-Type": "application/json",
-  },
-});
-
-function toggleButton(name, link){ // better name maybe
-  api.getCardInfo(name, link, false ,true)
-}
-
-function triggerConfirmation(deleteCard, name, link){ // needs help
-  const apiDelete = () =>{
-    api.getCardInfo(name, link, true); //should be named getCardId or delete card
-  }
-  const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
-  confirmPopup.open();
-  confirmPopup.setEventListeners();
-
-  
-  // api.deleteCard(name, link);
-}
 
 (function displayCards() {
+  const api = new Api({
+    baseUrl: "https://around-api.en.tripleten-services.com/v1",
+    headers: {
+      authorization: "9b29ae94-bb6f-470b-bccd-5f1bdf13a16a",
+      "Content-Type": "application/json",
+    },
+  });
+  
+  const editAvatarPopup = new avatarPopup(".modal-avatar", chageAvatar); // try to incorporate PopupWithForm
+  const avatarPhoto = document.querySelector(".profile__avatar");
+  
+  function chageAvatar(inputValue){
+    avatarPhoto.src = inputValue;
+    api.changeAvatar(inputValue);
+  }
+  
+  avatarPhoto.addEventListener("click", () =>{
+    editAvatarPopup.open();
+    editAvatarPopup.setEventListeners();
+  })
+  
+  
+  function toggleLikeButton(name, link){ 
+    api.getCardInfo(name, link, false ,true)
+  }
+  
+  function triggerConfirmation(deleteCard, name, link){
+    const apiDelete = () =>{
+      api.getCardInfo(name, link, true); 
+    }
+    const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
+    confirmPopup.open();
+    confirmPopup.setEventListeners();
+  
+  }
+  
   // Elements
   const imageClickHandler = ({ name, link }) => {
     imagePopup.open({ name, link });
-    api.toggleButtonState;
   };
   const cardTemplate =
     document.querySelector("#card-template").content.firstElementChild;
@@ -125,20 +138,18 @@ function triggerConfirmation(deleteCard, name, link){ // needs help
 
   //functions
 
-  function createCard(name, description, template) { // is the point to create the card info once and grab from that db
-    // change the name of option1 and option2;
+  function createCard(name, description, template) {
     const createCard = (
       name,
       description,
       option1 = template,
       option2 = imageClickHandler
     ) => {
-      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleButton );
+      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleLikeButton); 
       cardsSection.addItem(modelCard.addCard());
     };
 
     api.addCardInfo(name, description, createCard);
-    api.getCardInfo(); // am i using unnessecary resources, why returning 30 items
   }
 
   function handleProfileEditSubmit(inputElements) {
@@ -175,6 +186,4 @@ function triggerConfirmation(deleteCard, name, link){ // needs help
 
   addPopup.setEventListeners();
 })();
-
-// api.getCardInfo("Yosemite Valley", "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg");
 

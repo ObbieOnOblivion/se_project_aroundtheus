@@ -20,8 +20,6 @@ class PopupWithForm extends Popup {
       inputValues[input.name] = input.value;
     });
 
-    console.log(this._inputList)
-
     return inputValues;
   }
 
@@ -35,6 +33,7 @@ class PopupWithForm extends Popup {
     this._form.addEventListener("submit", (e) => {
       e.preventDefault();
       this._handleFormSubmit(this._getInputValues());
+      const saveButton = this._popupElement.querySelector(".modal__save-button").textContent = "Saving...";
     });
   }
 }
