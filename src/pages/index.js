@@ -18,7 +18,7 @@ import { avatarPopup } from "../components/AvatarPopup";
       "Content-Type": "application/json",
     },
   });
-  
+
   const editAvatarPopup = new avatarPopup(".modal-avatar", chageAvatar); // try to incorporate PopupWithForm
   const avatarPhoto = document.querySelector(".profile__avatar");
   
@@ -32,12 +32,11 @@ import { avatarPopup } from "../components/AvatarPopup";
     editAvatarPopup.setEventListeners();
   })
   
-  
   function toggleLikeButton(name, link){ 
     api.getCardInfo(name, link, false ,true)
   }
   
-  function triggerConfirmation(deleteCard, name, link){
+  function triggerConfirmation(deleteCard, name, link){ //refactor
     const apiDelete = () =>{
       api.getCardInfo(name, link, true); 
     }
@@ -54,6 +53,8 @@ import { avatarPopup } from "../components/AvatarPopup";
   const cardTemplate =
     document.querySelector("#card-template").content.firstElementChild;
   const galleryList = document.querySelector("#gallery__list");
+
+  api.test();
 
   const items = [
     {
@@ -91,7 +92,7 @@ import { avatarPopup } from "../components/AvatarPopup";
     {
       items,
       renderer: (cardData) => {
-        createCard(cardData.name, cardData.link, cardTemplate);
+        addCard(cardData.name, cardData.link, cardTemplate);
       },
     },
     galleryList
@@ -136,10 +137,23 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   imagePopup.setEventListeners();
 
+  //preset profile info on load 
+  api.getProfileInfo().then((results) => {
+    console.log(results);
+    profileName.textContent = results.name;
+    profileDescription.textContent = results.about;
+    avatarPhoto.src = results.avatar;
+  });
+
   //functions
 
+  function addCard(name, description, template) {
+    const modelCard = new Card(name, description, template, imageClickHandler);
+    cardsSection.addItem(modelCard.addCard());
+  }
+
   function createCard(name, description, template) {
-    const createCard = (
+    const addItem = (
       name,
       description,
       option1 = template,
@@ -149,7 +163,7 @@ import { avatarPopup } from "../components/AvatarPopup";
       cardsSection.addItem(modelCard.addCard());
     };
 
-    api.addCardInfo(name, description, createCard);
+    api.addCardInfo(name, description, addItem);
   }
 
   function handleProfileEditSubmit(inputElements) {
@@ -170,10 +184,15 @@ import { avatarPopup } from "../components/AvatarPopup";
   //event listeners
 
   profileEditButton.addEventListener("click", () => {
-    editPopup.setPreviewedValues({
-      name: profileName.innerText,
-      description: profileDescription.innerText,
+    api.getProfileInfo().then((data) =>{
+      console.log(data);
+      editPopup.setPreviewedValues({
+        //api 
+        name: data.name,
+        description: data.about,
+      });
     });
+    
     editPopup.open();
   });
 

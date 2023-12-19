@@ -1,11 +1,76 @@
 class Api {
+  //refactoring needed
   constructor({ baseUrl, headers }) {
     this.baseUrl = baseUrl;
     this.headers = headers;
   }
 
-  changeAvatar(link) {
+  deleteCard(cardId) {
+    fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
+      method: "DELETE",
+      headers: this.headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        console.log("Data deleted successfully");
+      })
+      .catch((error) => {
+        console.error("Error deleting data:", error);
+      });
+  }
 
+  test() {
+    //getCardInfo   for initial cards
+    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+      method: "GET",
+      headers: this.headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+
+
+
+        data.forEach((item) => {
+
+          this.deleteCard(item._id)
+        });
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
+      });
+  }
+
+  getProfileInfo() {
+    return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+      method: "GET",
+      headers: this.headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        return data;
+      })
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
+      });
+  }
+
+  changeAvatar(link) {
     fetch("https://around-api.en.tripleten-services.com/v1/users/me/avatar", {
       method: "PATCH",
       headers: this.headers,
@@ -53,26 +118,26 @@ class Api {
       });
   }
 
-  deleteCard(resource) {
-    const apiUrl = `${this.baseUrl}/cards/${resource}`;
+  // deleteCard(resource) {
+  //   const apiUrl = `${this.baseUrl}/cards/${resource}`;
 
-    const requestOptions = {
-      method: "DELETE",
-      headers: this.headers,
-    };
+  //   const requestOptions = {
+  //     method: "DELETE",
+  //     headers: this.headers,
+  //   };
 
-    return fetch(apiUrl, requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        console.log("Resource deleted successfully");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        throw error;
-      });
-  }
+  //   return fetch(apiUrl, requestOptions)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //       console.log("Resource deleted successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //       throw error;
+  //     });
+  // }
 
   getCardInfo(nameToFind, linkToFind, apiDelete = false, toggleButton = false) {
     const apiUrl = `${this.baseUrl}/cards`;
@@ -116,14 +181,14 @@ class Api {
       });
   }
 
-  addCardInfo(name, description, addCard) {
-    // change name of x function
+  addCardInfo(name, description, addCardMethod) {
     const apiUrl = `${this.baseUrl}/cards`;
     const requestOptions = {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({ name: name, link: description }),
     };
+
 
     fetch(apiUrl, requestOptions)
       .then((response) => {
@@ -133,7 +198,7 @@ class Api {
         return response.json();
       })
       .then((data) => {
-        addCard(data["name"], data["link"]);
+        addCardMethod(data["name"], data["link"]);
       })
       .catch((error) => {
         console.error("Error:", error);
