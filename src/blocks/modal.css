@@ -30,7 +30,7 @@
     padding-left: 36px;
     padding-right: 36px;
     justify-content: center;
-    row-gap: 35px;
+    row-gap: 5px;
     padding: 30px;
 }
 .modal-avatar__save-button{
@@ -59,20 +59,23 @@
     font-size: 24px;
     font-style: normal;
     font-weight: 900;
-    line-height: normal;}
+    line-height: normal;
+    margin-bottom: 30px;
+}
 
 
 .modal-avatar__input{
+    box-sizing: border-box;
     width: 100%;
     border: 0px;
     font-family: "Inter", Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
-    line-height: 22px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    border-bottom: solid 1px #D3D3D3;
+    font-size: 14px;
+    line-height: 17px;
+    border-bottom: rgba(0,0,0,.2) solid 1px;
+    padding-bottom: 13px;
+    cursor:pointer;
 }
 
 .modal-confirm{
@@ -170,6 +173,10 @@
     align-items: center;
     padding-left: 36px;
     padding-right: 36px;
+}
+
+.modal__container_confirmation{
+    height: 210px;
 }
 
 .modal__picture-container{

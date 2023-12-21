@@ -34,20 +34,27 @@ class Api {
 
         return response.json();
       })
-      .then((data) => {
-        console.log(data);
-
-
-
-        data.forEach((item) => {
-
-          this.deleteCard(item._id)
-        });
-        console.log(data);
-      })
       .catch((error) => {
         console.error("Error updating avatar:", error);
       });
+  }
+
+  getInitailcards(){
+
+    const apiUrl = `${this.baseUrl}/cards`;
+
+    const requestOptions = {
+      method: "GET",
+      headers: this.headers,
+    };
+
+    return fetch(apiUrl, requestOptions)
+    .then((res) => {
+      return res.json()
+    } )
+    .then((res) =>{
+      console.log(res)
+    })
   }
 
   getProfileInfo() {
@@ -152,10 +159,12 @@ class Api {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         return response.json();
       })
       .then((data) => {
         const reversedData = [...data].reverse();
+        console.log(data);
         const lastIndex = reversedData.findIndex(
           (user) => user.name === nameToFind && user.link === linkToFind
         );

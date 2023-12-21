@@ -9,22 +9,49 @@
     <meta name="keywords" content="a tour around the united states" />
     <link type="image/x-icon" rel="icon" href="favicon.ico" />
   </head>
+
+  <!-- confirmation-modal -->
   <body class="page">
-    <div class="modal-confirm" id="confirmation-modal"> 
-      <div class="modal-confirm__container ">
-        <h3 class="modal-confirm__header" >Are You Sure?</h3> 
-        <button class="modal-confirm__save-button">Yes</button>
+    <div class="modal" id="confirmation-modal"> 
+      <div class="modal__container modal__container_confirmation">
+        <h3 class="modal__header" >Are You Sure?</h3> 
+        <button class="modal__save-button">Yes</button>
+
       </div>
+      <!-- change class names  -->
+      <button
+        class="modal__close-button"
+        id="place-modal__close_button"
+        type="button"
+      >
+        <img
+          class="modal__close-image"
+          src="<%=require('./images/Close-Icon.svg')%>"
+          alt="close image"
+        />
+      </button>
+    </div>    
 
-    </div>
-
-    <div class="modal-avatar">
+    <!-- modal-avatar -->
+    <div class="modal" id="avatar-modal">
       <!-- change class names so you can click to close  -->
-      <form class="modal-avatar__container">
+      <form class="modal-avatar__container" name="avatar-form">
         <h3 class="modal-avatar__header" >Change Profile Picture</h3> 
         <input class="modal-avatar__input" type="url" placeholder="Enter Url" name="UrlInput">
+        <span id="modal-avatar__input_name-error" class="modal__input-description"></span>
         <input class="modal-avatar__save-button" type="submit" name="SubmitInput"></input>
       </form>
+      <button
+        class="modal__close-button"
+        id="place-modal__close_button"
+        type="button"
+      >
+        <img
+          class="modal__close-image"
+          src="<%=require('./images/Close-Icon.svg')%>"
+          alt="close image"
+        />
+      </button>
     </div>
     <div class="modal" id="profile-modal">
       <form class="modal__container" id="profile-modal__form" name="edit-form">
@@ -167,7 +194,7 @@
               <img
                 class="profile__avatar"
                 src=""
-                alt="Avatar Image"
+                alt="Avatar__Img"
               />
             </div>
 

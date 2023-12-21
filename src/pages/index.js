@@ -19,10 +19,14 @@ import { avatarPopup } from "../components/AvatarPopup";
     },
   });
 
-  const editAvatarPopup = new avatarPopup(".modal-avatar", chageAvatar); // try to incorporate PopupWithForm
+  api.getInitailcards()
+
+  // try to incorporate PopupWithForm {problems with inputvalues}
+  const editAvatarPopup = new avatarPopup("#avatar-modal", chageAvatar); 
   const avatarPhoto = document.querySelector(".profile__avatar");
   
   function chageAvatar(inputValue){
+    console.log(inputValue);
     avatarPhoto.src = inputValue;
     api.changeAvatar(inputValue);
   }
@@ -38,8 +42,14 @@ import { avatarPopup } from "../components/AvatarPopup";
   
   function triggerConfirmation(deleteCard, name, link){ //refactor
     const apiDelete = () =>{
+
+      console.log(name, " Api delete ");
+      console.log(link, " Api delete ");
       api.getCardInfo(name, link, true); 
+      // return {name: name, link: link, handler: api.getCardInfo}
     }
+
+    //conflicting a little bit, why is trigger confirmation opening the modals 
     const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
     confirmPopup.open();
     confirmPopup.setEventListeners();
@@ -101,6 +111,8 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   const editForm = document.forms["edit-form"];
   const addForm = document.forms["add-form"];
+  const avatarForm = document.forms["avatar-form"];
+  console.log(avatarForm);
 
   const configuration = {
     formSelector: ".modal__container",
@@ -113,9 +125,11 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   const editValidator = new FormValidator(configuration, editForm);
   const addValidator = new FormValidator(configuration, addForm);
+  const avatarValidator = new FormValidator(configuration, avatarForm);
 
   editValidator.enableValidation();
   addValidator.enableValidation();
+  avatarValidator.enableValidation();
 
   const profile = document.querySelector("#profile");
   const profileEditButton = profile.querySelector("#profile__edit_button");
@@ -148,7 +162,7 @@ import { avatarPopup } from "../components/AvatarPopup";
   //functions
 
   function addCard(name, description, template) {
-    const modelCard = new Card(name, description, template, imageClickHandler);
+    const modelCard = new Card(name, description, template, imageClickHandler, triggerConfirmation, toggleLikeButton);
     cardsSection.addItem(modelCard.addCard());
   }
 

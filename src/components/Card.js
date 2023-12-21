@@ -42,6 +42,7 @@ class Card {
         }
       }
       this._deleteHandler(preformDeleteAction, this._name, this._link)
+      // console.log(this._deleteHandler)
 
 
     });
