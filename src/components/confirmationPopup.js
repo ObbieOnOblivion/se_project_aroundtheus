@@ -13,9 +13,10 @@ class confirmationPopup extends Popup {
     super.setEventListeners()
     const saveButton = this._popupElement.querySelector(".modal__save-button");
     saveButton.addEventListener("click", () => {
-      this.submitHandler();
-      console.log(this.apiDelete());
-      this.apiDelete();
+      // this.submitHandler();
+      // this.apiDelete();
+      console.log("ththththth")
+
       super.close();
     });
   }

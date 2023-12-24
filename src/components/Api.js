@@ -21,8 +21,7 @@ class Api {
       });
   }
 
-  test() {
-    //getCardInfo   for initial cards
+  getInitailcards() {
     return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
       method: "GET",
       headers: this.headers,
@@ -31,7 +30,7 @@ class Api {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
+        // console.log(response.json())
         return response.json();
       })
       .catch((error) => {
@@ -39,23 +38,22 @@ class Api {
       });
   }
 
-  getInitailcards(){
+  // getInitailcards() {
+  //   const apiUrl = `${this.baseUrl}/cards`;
 
-    const apiUrl = `${this.baseUrl}/cards`;
+  //   const requestOptions = {
+  //     method: "GET",
+  //     headers: this.headers,
+  //   };
 
-    const requestOptions = {
-      method: "GET",
-      headers: this.headers,
-    };
-
-    return fetch(apiUrl, requestOptions)
-    .then((res) => {
-      return res.json()
-    } )
-    .then((res) =>{
-      console.log(res)
-    })
-  }
+  //   return fetch(apiUrl, requestOptions)
+  //     .then((res) => {
+  //       return res.json();
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // }
 
   getProfileInfo() {
     return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
@@ -99,7 +97,44 @@ class Api {
       });
   }
 
-  toggleButtonState(cardId, isLiked) {
+  returnCardIsLiked(name, link) {
+    // console.log(name);
+    // console.log(link);
+    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+      method: "GET",
+      headers: this.headers,
+    })
+      .then((response) => {
+        // console.log("andre jick");
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response;
+      })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        data.forEach((element) => {
+          console.log(element);
+          if (element.name == name && element.link == link) {
+            console.log(element.isLiked);
+            return element.isLiked;
+          }
+        });
+
+        return data;
+      })
+
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
+      });
+  }
+
+  preformToggle(cardId, isLiked, fillButton, vacateButton) {
+    // specify that its a function
+
     const apiUrl = `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`;
     console.log("thisisis");
 
@@ -116,12 +151,51 @@ class Api {
         return response.json();
       })
       .then((data) => {
-        console.log("Card like status updated successfully:", data);
+        console.log("Card like status updated successfully:", data.isLiked);
+        console.log(typeof data.isLiked);
+        if (data.isLiked) {
+          console.log("well well");
+          fillButton(); // two handlers
+        } else {
+          vacateButton();
+        }
         return data;
       })
       .catch((error) => {
         console.error("Error updating card like status:", error);
         throw error;
+      });
+  }
+
+  toggleHeartIcon(name, link, fillButton, vacateButton) {
+    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+      method: "GET",
+      headers: this.headers,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response;
+      })
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        res.forEach((element) => {
+          if (element.name == name && element.link == link) {
+            this.preformToggle(
+              element._id,
+              element.isLiked,
+              fillButton,
+              vacateButton
+            );
+            return element._id;
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Error updating avatar:", error);
       });
   }
 
@@ -146,49 +220,49 @@ class Api {
   //     });
   // }
 
-  getCardInfo(nameToFind, linkToFind, apiDelete = false, toggleButton = false) {
-    const apiUrl = `${this.baseUrl}/cards`;
+  // getCardInfo(nameToFind, linkToFind, apiDelete = false, toggleButton = false) {
+  //   const apiUrl = `${this.baseUrl}/cards`;
 
-    const requestOptions = {
-      method: "GET",
-      headers: this.headers,
-    };
+  //   const requestOptions = {
+  //     method: "GET",
+  //     headers: this.headers,
+  //   };
 
-    return fetch(apiUrl, requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+  //   return fetch(apiUrl, requestOptions)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
 
-        return response.json();
-      })
-      .then((data) => {
-        const reversedData = [...data].reverse();
-        console.log(data);
-        const lastIndex = reversedData.findIndex(
-          (user) => user.name === nameToFind && user.link === linkToFind
-        );
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       const reversedData = [...data].reverse();
+  //       console.log(data);
+  //       const lastIndex = reversedData.findIndex(
+  //         (user) => user.name === nameToFind && user.link === linkToFind
+  //       );
 
-        if (lastIndex !== -1) {
-          const lastInstance = data[data.length - 1 - lastIndex];
-          console.log("Last instance found:", lastInstance);
-          if (apiDelete) {
-            this.deleteCard(lastInstance._id);
-          }
-          console.log(lastInstance.isLiked);
-          if (toggleButton) {
-            this.toggleButtonState(lastInstance._id, lastInstance.isLiked);
-          }
-        } else {
-          console.log("No instance found with the specified name and link.");
-          return undefined;
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        throw error;
-      });
-  }
+  //       if (lastIndex !== -1) {
+  //         const lastInstance = data[data.length - 1 - lastIndex];
+  //         console.log("Last instance found:", lastInstance);
+  //         if (apiDelete) {
+  //           this.deleteCard(lastInstance._id);
+  //         }
+  //         console.log(lastInstance.isLiked);
+  //         if (toggleButton) {
+  //           this.toggleButtonState(lastInstance._id, lastInstance.isLiked);
+  //         }
+  //       } else {
+  //         console.log("No instance found with the specified name and link.");
+  //         return undefined;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error:", error);
+  //       throw error;
+  //     });
+  // }
 
   addCardInfo(name, description, addCardMethod) {
     const apiUrl = `${this.baseUrl}/cards`;
@@ -197,7 +271,6 @@ class Api {
       headers: this.headers,
       body: JSON.stringify({ name: name, link: description }),
     };
-
 
     fetch(apiUrl, requestOptions)
       .then((response) => {

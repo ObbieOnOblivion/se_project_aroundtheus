@@ -19,7 +19,22 @@ import { avatarPopup } from "../components/AvatarPopup";
     },
   });
 
-  api.getInitailcards()
+
+  api.getInitailcards().then((items) =>{
+    // handle the response 
+    console.log(items);
+    const cardsSection = new Section(
+      {
+        items,
+        renderer: (cardData) => {
+          addCard(cardData.name, cardData.link, cardTemplate);
+        },
+      },
+      galleryList
+    );
+    cardsSection.renderItems();
+    
+  })
 
   // try to incorporate PopupWithForm {problems with inputvalues}
   const editAvatarPopup = new avatarPopup("#avatar-modal", chageAvatar); 
@@ -35,23 +50,32 @@ import { avatarPopup } from "../components/AvatarPopup";
     editAvatarPopup.open();
     editAvatarPopup.setEventListeners();
   })
-  
-  function toggleLikeButton(name, link){ 
-    api.getCardInfo(name, link, false ,true)
+  // api.returnCardIsLiked("Bald Mountains", "https://practicum-content.s3.us-west-1.amazonaws.c…ftware-engineer/around-project/bald-mountains.jpg")
+
+  // function ggtoggleLikeButton(name, link){
+  //   api.returnCardIsLiked(name, link)
+  //   .then((res) => {
+  //     console.log(res)
+  //   })
+  // }
+
+  function ggtoggleLikeButton(){
+
   }
   
-  function triggerConfirmation(deleteCard, name, link){ //refactor
-    const apiDelete = () =>{
+  function toggleLikeButton(name, link, fillButton, vacateButton){ 
 
-      console.log(name, " Api delete ");
-      console.log(link, " Api delete ");
-      api.getCardInfo(name, link, true); 
-      // return {name: name, link: link, handler: api.getCardInfo}
-    }
-
+    api.toggleHeartIcon(name, link, fillButton, vacateButton)
+  }
+  
+  function triggerConfirmation(deleteCard){ //refactor
+    api.deletecard(deleteCard.id)
+    .then((res) => {
+      //delete the card
+    })
     //conflicting a little bit, why is trigger confirmation opening the modals 
     const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
-    confirmPopup.open();
+    confirmPopup.open(); 
     confirmPopup.setEventListeners();
   
   }
@@ -63,8 +87,6 @@ import { avatarPopup } from "../components/AvatarPopup";
   const cardTemplate =
     document.querySelector("#card-template").content.firstElementChild;
   const galleryList = document.querySelector("#gallery__list");
-
-  api.test();
 
   const items = [
     {
@@ -98,16 +120,20 @@ import { avatarPopup } from "../components/AvatarPopup";
     },
   ];
 
-  const cardsSection = new Section(
-    {
-      items,
-      renderer: (cardData) => {
-        addCard(cardData.name, cardData.link, cardTemplate);
-      },
-    },
-    galleryList
-  );
-  cardsSection.renderItems();
+  items.forEach(item =>{
+    console.log(item);
+  })
+
+  // const cardsSection = new Section(
+  //   {
+  //     items,
+  //     renderer: (cardData) => {
+  //       addCard(cardData.name, cardData.link, cardTemplate);
+  //     },
+  //   },
+  //   galleryList
+  // );
+  // cardsSection.renderItems();
 
   const editForm = document.forms["edit-form"];
   const addForm = document.forms["add-form"];
@@ -158,11 +184,23 @@ import { avatarPopup } from "../components/AvatarPopup";
     profileDescription.textContent = results.about;
     avatarPhoto.src = results.avatar;
   });
+  // api.setLikeButton();
 
   //functions
 
   function addCard(name, description, template) {
-    const modelCard = new Card(name, description, template, imageClickHandler, triggerConfirmation, toggleLikeButton);
+    const cardsSection = new Section(
+      {
+        items,
+        renderer: (cardData) => {
+          addCard(cardData.name, cardData.link, cardTemplate);
+        },
+      },
+      galleryList
+    );
+
+    const modelCard = new Card(name, description, template, imageClickHandler, triggerConfirmation, toggleLikeButton, 
+      api.returnCardIsLiked);
     cardsSection.addItem(modelCard.addCard());
   }
 
@@ -173,11 +211,15 @@ import { avatarPopup } from "../components/AvatarPopup";
       option1 = template,
       option2 = imageClickHandler
     ) => {
-      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleLikeButton); 
+      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleLikeButton,
+        api.returnCardIsLiked); 
       cardsSection.addItem(modelCard.addCard());
     };
 
-    api.addCardInfo(name, description, addItem);
+    // api.addCardInfo(name, description)
+    // .then((res) => {
+    //   // add to the dom 
+    // })
   }
 
   function handleProfileEditSubmit(inputElements) {
@@ -218,5 +260,7 @@ import { avatarPopup } from "../components/AvatarPopup";
   editPopup.setEventListeners();
 
   addPopup.setEventListeners();
+
 })();
+
 

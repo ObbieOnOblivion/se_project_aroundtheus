@@ -1,11 +1,12 @@
 class Card {
-  constructor(name, link, template, imageClickHandler, deleteHandler, toggleButton) {
+  constructor(name, link, template, imageClickHandler, deleteHandler, toggleButton, ggtoggle) {
     this._name = name;
     this._link = link;
     this._template = template;
     this._imageClickHandler = imageClickHandler;
     this._deleteHandler = deleteHandler; 
     this._toggleButton = toggleButton; 
+    this._test = ggtoggle
   }
 
   _addImageFunctionality() {
@@ -20,15 +21,27 @@ class Card {
     });
   }
 
+  _setLikeButtons() {
+    this._test(this._name, this._link)
+    // .then((res) =>{
+    //   console.log(res);
+    // })
+  };
+
 
   _addLikeFunctionality() { 
+    this._setLikeButtons();
+
     const likeButton = this._template.querySelector("#gallery__like-button");
     
     likeButton.addEventListener("click", () => {
 
-      likeButton.classList.toggle("gallery__like-button_liked"); //pass this to the isLike in Api class 
-      this._toggleButton(this._name, this._link);
-
+      this._toggleButton(this._name, this._link, () => {
+        likeButton.classList.add("gallery__like-button_liked");
+      },
+      () =>{
+        likeButton.classList.remove("gallery__like-button_liked");
+      })
     });
   }
 
