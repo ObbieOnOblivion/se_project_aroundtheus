@@ -19,10 +19,13 @@ import { avatarPopup } from "../components/AvatarPopup";
     },
   });
 
+  let initialCardsInfo = NaN;
 
-  api.getInitailcards().then((items) =>{
+
+  api.getInitialcards().then((items) =>{
     // handle the response 
-    console.log(items);
+    initialCardsInfo = items;
+    console.log(initialCardsInfo);
     const cardsSection = new Section(
       {
         items,
@@ -68,18 +71,6 @@ import { avatarPopup } from "../components/AvatarPopup";
     api.toggleHeartIcon(name, link, fillButton, vacateButton)
   }
   
-  function triggerConfirmation(deleteCard){ //refactor
-    api.deletecard(deleteCard.id)
-    .then((res) => {
-      //delete the card
-    })
-    //conflicting a little bit, why is trigger confirmation opening the modals 
-    const confirmPopup = new confirmationPopup("#confirmation-modal", deleteCard, apiDelete);
-    confirmPopup.open(); 
-    confirmPopup.setEventListeners();
-  
-  }
-  
   // Elements
   const imageClickHandler = ({ name, link }) => {
     imagePopup.open({ name, link });
@@ -119,11 +110,7 @@ import { avatarPopup } from "../components/AvatarPopup";
       link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
     },
   ];
-
-  items.forEach(item =>{
-    console.log(item);
-  })
-
+  
   // const cardsSection = new Section(
   //   {
   //     items,
@@ -199,8 +186,8 @@ import { avatarPopup } from "../components/AvatarPopup";
       galleryList
     );
 
-    const modelCard = new Card(name, description, template, imageClickHandler, triggerConfirmation, toggleLikeButton, 
-      api.returnCardIsLiked);
+    const modelCard = new Card(name, description, template, imageClickHandler, api.deleteCard, toggleLikeButton, 
+      initialCardsInfo);
     cardsSection.addItem(modelCard.addCard());
   }
 
@@ -211,8 +198,8 @@ import { avatarPopup } from "../components/AvatarPopup";
       option1 = template,
       option2 = imageClickHandler
     ) => {
-      const modelCard = new Card(name, description, option1, option2, triggerConfirmation, toggleLikeButton,
-        api.returnCardIsLiked); 
+      const modelCard = new Card(name, description, option1, option2, api.deleteCard, toggleLikeButton,
+        initialCardsInfo); 
       cardsSection.addItem(modelCard.addCard());
     };
 

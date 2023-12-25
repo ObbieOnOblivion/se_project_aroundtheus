@@ -1,12 +1,12 @@
 class Card {
-  constructor(name, link, template, imageClickHandler, deleteHandler, toggleButton, ggtoggle) {
+  constructor(name, link, template, imageClickHandler,apiDelete, toggleButton, apiInfo) {
     this._name = name;
     this._link = link;
     this._template = template;
-    this._imageClickHandler = imageClickHandler;
-    this._deleteHandler = deleteHandler; 
+    this._imageClickHandler = imageClickHandler; 
+    this._deleteHandler = apiDelete
     this._toggleButton = toggleButton; 
-    this._test = ggtoggle
+    this._apiInformation = apiInfo;
   }
 
   _addImageFunctionality() {
@@ -21,18 +21,16 @@ class Card {
     });
   }
 
-  _setLikeButtons() {
-    this._test(this._name, this._link)
-    // .then((res) =>{
-    //   console.log(res);
-    // })
-  };
-
-
   _addLikeFunctionality() { 
-    this._setLikeButtons();
-
     const likeButton = this._template.querySelector("#gallery__like-button");
+
+    this._apiInformation.forEach(item =>{
+      if (item.name == this._name && item.link == this._link){
+        if (item.isLiked){
+          likeButton.classList.add("gallery__like-button_liked");
+        }
+      }
+    })
     
     likeButton.addEventListener("click", () => {
 
@@ -46,16 +44,21 @@ class Card {
   }
 
   _addDeleteFunctionality() {
+    
     const deleteButton = this._template.querySelector("#gallery__trash");
     deleteButton.addEventListener("click", () => {
-      const preformDeleteAction = () =>{
         const cardElement = deleteButton.closest(".gallery__card");
         if (cardElement) {
           cardElement.remove();
-        }
       }
-      this._deleteHandler(preformDeleteAction, this._name, this._link)
-      // console.log(this._deleteHandler)
+      this._apiInformation.forEach(item => {
+        if (item.name == this._name && item.link == this._link){
+          if (item._id){
+            console.log(item._id);
+            this._deleteHandler(item._id);
+          }
+        }
+      })
 
 
     });
