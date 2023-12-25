@@ -1,5 +1,5 @@
 class Card {
-  constructor(name, link, template, imageClickHandler,apiDelete, toggleButton, apiInfo) {
+  constructor(name, link, template, imageClickHandler, apiDelete, toggleButton, apiInfo) {
     this._name = name;
     this._link = link;
     this._template = template;
@@ -7,6 +7,7 @@ class Card {
     this._deleteHandler = apiDelete
     this._toggleButton = toggleButton; 
     this._apiInformation = apiInfo;
+    this._id = NaN
   }
 
   _addImageFunctionality() {
@@ -46,21 +47,25 @@ class Card {
   _addDeleteFunctionality() {
     
     const deleteButton = this._template.querySelector("#gallery__trash");
+    const cardElement = deleteButton.closest(".gallery__card");
     deleteButton.addEventListener("click", () => {
-        const cardElement = deleteButton.closest(".gallery__card");
-        if (cardElement) {
-          cardElement.remove();
-      }
       this._apiInformation.forEach(item => {
-        if (item.name == this._name && item.link == this._link){
+        if (item.name == this._name && item.link == this._link){ //use a promise instead
           if (item._id){
-            console.log(item._id);
-            this._deleteHandler(item._id);
+            this._id = item._id;
+
+            console.log(this._id);
+            // this._deleteHandler(this._id);
+            
+            if (this._deleteHandler(this._id)){
+              if (cardElement) {
+                cardElement.remove();
+            }
+            };
+            
           }
         }
       })
-
-
     });
   }
 

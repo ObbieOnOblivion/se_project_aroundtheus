@@ -1,10 +1,9 @@
 import Popup from "./Popup";
 
 class confirmationPopup extends Popup {
-  constructor(popupSelector, submitHandler, apiDelete ) {
+  constructor(popupSelector, submitHandler ) {
     super({ popupSelector });
     this.submitHandler = submitHandler;
-    this.apiDelete = apiDelete;
   }
   open() {
     super.open();
@@ -13,10 +12,8 @@ class confirmationPopup extends Popup {
     super.setEventListeners()
     const saveButton = this._popupElement.querySelector(".modal__save-button");
     saveButton.addEventListener("click", () => {
-      // this.submitHandler();
-      // this.apiDelete();
+      this.submitHandler();
       console.log("ththththth")
-
       super.close();
     });
   }

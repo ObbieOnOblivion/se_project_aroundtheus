@@ -115,7 +115,7 @@ class Api {
       });
   }
 
-  toggleHeartIcon(name, link, fillButton, vacateButton) {
+  toggleHeartIcon(name, link, fillButton, vacateButton) { // search via _id of card 
     return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
       method: "GET",
       headers: this.headers,

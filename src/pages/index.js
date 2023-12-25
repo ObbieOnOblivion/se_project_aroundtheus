@@ -9,7 +9,6 @@ import { UserInfo } from "../components/UserInfo";
 import { confirmationPopup } from "../components/confirmationPopup";
 import { avatarPopup } from "../components/AvatarPopup";
 
-
 (function displayCards() {
   const api = new Api({
     baseUrl: "https://around-api.en.tripleten-services.com/v1",
@@ -21,9 +20,8 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   let initialCardsInfo = NaN;
 
-
-  api.getInitialcards().then((items) =>{
-    // handle the response 
+  api.getInitialcards().then((items) => {
+    // handle the response
     initialCardsInfo = items;
     console.log(initialCardsInfo);
     const cardsSection = new Section(
@@ -36,23 +34,22 @@ import { avatarPopup } from "../components/AvatarPopup";
       galleryList
     );
     cardsSection.renderItems();
-    
-  })
+  });
 
   // try to incorporate PopupWithForm {problems with inputvalues}
-  const editAvatarPopup = new avatarPopup("#avatar-modal", chageAvatar); 
+  const editAvatarPopup = new avatarPopup("#avatar-modal", chageAvatar);
   const avatarPhoto = document.querySelector(".profile__avatar");
-  
-  function chageAvatar(inputValue){
+
+  function chageAvatar(inputValue) {
     console.log(inputValue);
     avatarPhoto.src = inputValue;
     api.changeAvatar(inputValue);
   }
-  
-  avatarPhoto.addEventListener("click", () =>{
+
+  avatarPhoto.addEventListener("click", () => {
     editAvatarPopup.open();
     editAvatarPopup.setEventListeners();
-  })
+  });
   // api.returnCardIsLiked("Bald Mountains", "https://practicum-content.s3.us-west-1.amazonaws.c…ftware-engineer/around-project/bald-mountains.jpg")
 
   // function ggtoggleLikeButton(name, link){
@@ -62,15 +59,12 @@ import { avatarPopup } from "../components/AvatarPopup";
   //   })
   // }
 
-  function ggtoggleLikeButton(){
+  function ggtoggleLikeButton() {}
 
+  function toggleLikeButton(name, link, fillButton, vacateButton) {
+    api.toggleHeartIcon(name, link, fillButton, vacateButton);
   }
-  
-  function toggleLikeButton(name, link, fillButton, vacateButton){ 
 
-    api.toggleHeartIcon(name, link, fillButton, vacateButton)
-  }
-  
   // Elements
   const imageClickHandler = ({ name, link }) => {
     imagePopup.open({ name, link });
@@ -110,7 +104,7 @@ import { avatarPopup } from "../components/AvatarPopup";
       link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
     },
   ];
-  
+
   // const cardsSection = new Section(
   //   {
   //     items,
@@ -164,7 +158,7 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   imagePopup.setEventListeners();
 
-  //preset profile info on load 
+  //preset profile info on load
   api.getProfileInfo().then((results) => {
     console.log(results);
     profileName.textContent = results.name;
@@ -186,27 +180,52 @@ import { avatarPopup } from "../components/AvatarPopup";
       galleryList
     );
 
-    const modelCard = new Card(name, description, template, imageClickHandler, api.deleteCard, toggleLikeButton, 
-      initialCardsInfo);
+    const modelCard = new Card(
+      name,
+      description,
+      template,
+      imageClickHandler,
+      (cardId) => {
+        console.log(cardId);
+        // api.deleteCard(cardId);
+        const deletePopup = new confirmationPopup("#confirmation-modal", () =>{api.deleteCard(cardId)})
+        deletePopup.open();
+        deletePopup.setEventListeners();
+      },
+      toggleLikeButton,
+      initialCardsInfo
+    );
     cardsSection.addItem(modelCard.addCard());
   }
 
   function createCard(name, description, template) {
-    const addItem = (
+    const cardsSection = new Section(
+      {
+        items,
+        renderer: (cardData) => {
+          addCard(cardData.name, cardData.link, cardTemplate);
+        },
+      },
+      galleryList
+    );
+
+    const modelCard = new Card(
       name,
       description,
-      option1 = template,
-      option2 = imageClickHandler
-    ) => {
-      const modelCard = new Card(name, description, option1, option2, api.deleteCard, toggleLikeButton,
-        initialCardsInfo); 
-      cardsSection.addItem(modelCard.addCard());
-    };
+      template,
+      imageClickHandler,
+      () => {
+        const deletePopup = new confirmationPopup("#confirmation-modal", () =>{api.deleteCard})
+        deletePopup.open();
+        deletePopup.setEventListeners();
+        // api.deleteCard(cardId);
+      },
+      toggleLikeButton,
+      initialCardsInfo
+    );
+    cardsSection.addItem(modelCard.addCard());
 
-    // api.addCardInfo(name, description)
-    // .then((res) => {
-    //   // add to the dom 
-    // })
+    api.addCardInfo(name, description);
   }
 
   function handleProfileEditSubmit(inputElements) {
@@ -227,15 +246,15 @@ import { avatarPopup } from "../components/AvatarPopup";
   //event listeners
 
   profileEditButton.addEventListener("click", () => {
-    api.getProfileInfo().then((data) =>{
+    api.getProfileInfo().then((data) => {
       console.log(data);
       editPopup.setPreviewedValues({
-        //api 
+        //api
         name: data.name,
         description: data.about,
       });
     });
-    
+
     editPopup.open();
   });
 
@@ -247,7 +266,4 @@ import { avatarPopup } from "../components/AvatarPopup";
   editPopup.setEventListeners();
 
   addPopup.setEventListeners();
-
 })();
-
-
