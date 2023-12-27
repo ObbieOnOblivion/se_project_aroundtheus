@@ -28,7 +28,8 @@ import { avatarPopup } from "../components/AvatarPopup";
       {
         items,
         renderer: (cardData) => {
-          addCard(cardData.name, cardData.link, cardTemplate);
+          console.log("---- oo ----", cardData._id);
+          addCard(cardData.name, cardData.link, cardTemplate, cardData._id);
         },
       },
       galleryList
@@ -50,19 +51,9 @@ import { avatarPopup } from "../components/AvatarPopup";
     editAvatarPopup.open();
     editAvatarPopup.setEventListeners();
   });
-  // api.returnCardIsLiked("Bald Mountains", "https://practicum-content.s3.us-west-1.amazonaws.c…ftware-engineer/around-project/bald-mountains.jpg")
 
-  // function ggtoggleLikeButton(name, link){
-  //   api.returnCardIsLiked(name, link)
-  //   .then((res) => {
-  //     console.log(res)
-  //   })
-  // }
-
-  function ggtoggleLikeButton() {}
-
-  function toggleLikeButton(name, link, fillButton, vacateButton) {
-    api.toggleHeartIcon(name, link, fillButton, vacateButton);
+  function toggleLikeButton(id, fillButton, vacateButton) {
+    api.toggleHeartIcon(id, fillButton, vacateButton);
   }
 
   // Elements
@@ -72,49 +63,6 @@ import { avatarPopup } from "../components/AvatarPopup";
   const cardTemplate =
     document.querySelector("#card-template").content.firstElementChild;
   const galleryList = document.querySelector("#gallery__list");
-
-  const items = [
-    {
-      name: "Yosemite Valley",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
-    },
-
-    {
-      name: "Lake Louise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg",
-    },
-
-    {
-      name: "Bald Mountains",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
-    },
-
-    {
-      name: "Latemar",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/latemar.jpg",
-    },
-
-    {
-      name: "Vanoise National Park",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/vanoise.jpg",
-    },
-
-    {
-      name: "Lago di Braies",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
-    },
-  ];
-
-  // const cardsSection = new Section(
-  //   {
-  //     items,
-  //     renderer: (cardData) => {
-  //       addCard(cardData.name, cardData.link, cardTemplate);
-  //     },
-  //   },
-  //   galleryList
-  // );
-  // cardsSection.renderItems();
 
   const editForm = document.forms["edit-form"];
   const addForm = document.forms["add-form"];
@@ -165,67 +113,42 @@ import { avatarPopup } from "../components/AvatarPopup";
     profileDescription.textContent = results.about;
     avatarPhoto.src = results.avatar;
   });
-  // api.setLikeButton();
 
   //functions
 
-  function addCard(name, description, template) {
-    const cardsSection = new Section(
-      {
-        items,
-        renderer: (cardData) => {
-          addCard(cardData.name, cardData.link, cardTemplate);
-        },
-      },
-      galleryList
-    );
+
+  function addCard(name, description, template, id) {
 
     const modelCard = new Card(
       name,
       description,
       template,
       imageClickHandler,
-      (cardId) => {
-        console.log(cardId);
-        // api.deleteCard(cardId);
-        const deletePopup = new confirmationPopup("#confirmation-modal", () =>{api.deleteCard(cardId)})
+      (card) => {
+        console.log(card);
+
+        // api.deleteCard(card._id, card.deleteCard()); // 
+        const deletePopup = new confirmationPopup("#confirmation-modal", api.deleteCard)
         deletePopup.open();
-        deletePopup.setEventListeners();
+        const deleteFunctionality = {id:card._id, handler:card.deleteCard}
+        if (deletePopup.setEventListeners(deleteFunctionality)){
+          card.deleteCard(card._id);
+        };
+
       },
       toggleLikeButton,
-      initialCardsInfo
+      initialCardsInfo,
+      id
     );
-    cardsSection.addItem(modelCard.addCard());
+
+    galleryList.prepend(modelCard.addCard());
   }
 
   function createCard(name, description, template) {
-    const cardsSection = new Section(
-      {
-        items,
-        renderer: (cardData) => {
-          addCard(cardData.name, cardData.link, cardTemplate);
-        },
-      },
-      galleryList
-    );
-
-    const modelCard = new Card(
-      name,
-      description,
-      template,
-      imageClickHandler,
-      () => {
-        const deletePopup = new confirmationPopup("#confirmation-modal", () =>{api.deleteCard})
-        deletePopup.open();
-        deletePopup.setEventListeners();
-        // api.deleteCard(cardId);
-      },
-      toggleLikeButton,
-      initialCardsInfo
-    );
-    cardsSection.addItem(modelCard.addCard());
-
-    api.addCardInfo(name, description);
+    api.addCardInfo(name, description, (name, link, id) => {
+      console.log(template);
+      addCard(name, link, template, id);
+    });
   }
 
   function handleProfileEditSubmit(inputElements) {
@@ -266,4 +189,6 @@ import { avatarPopup } from "../components/AvatarPopup";
   editPopup.setEventListeners();
 
   addPopup.setEventListeners();
+
+  console.log(api.test());
 })();

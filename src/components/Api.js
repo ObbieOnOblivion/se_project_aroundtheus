@@ -1,3 +1,6 @@
+
+const obj = {name: "obbie", ocupation: "Crypto Daytrader"};
+
 class Api {
   //refactoring needed
   constructor({ baseUrl, headers }) {
@@ -5,7 +8,14 @@ class Api {
     this.headers = headers;
   }
 
-  deleteCard(cardId) {
+  test(){
+    const obj2 = {residance: "USA", hobby: "WallSteet Bets"}
+    obj2.__proto__ = obj
+
+    return obj2.name
+  }
+
+  deleteCard(cardId, handler) {
     fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
       method: "DELETE",
       headers: this.headers,
@@ -15,7 +25,9 @@ class Api {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         console.log("Data deleted successfully");
+        return response
       })
+
       .catch((error) => {
         console.error("Error deleting data:", error);
       });
@@ -115,7 +127,7 @@ class Api {
       });
   }
 
-  toggleHeartIcon(name, link, fillButton, vacateButton) { // search via _id of card 
+  toggleHeartIcon(id, fillButton, vacateButton) {
     return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
       method: "GET",
       headers: this.headers,
@@ -131,7 +143,7 @@ class Api {
       })
       .then((res) => {
         res.forEach((element) => {
-          if (element.name == name && element.link == link) {
+          if (element._id == id) {
             this.preformToggle(
               element._id,
               element.isLiked,
@@ -163,7 +175,8 @@ class Api {
         return response.json();
       })
       .then((data) => {
-        addCardMethod(data["name"], data["link"]);
+        console.log("api workie workie")
+        addCardMethod(data["name"], data["link"], data["_id"]);
       })
       .catch((error) => {
         console.error("Error:", error);

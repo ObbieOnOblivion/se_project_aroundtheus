@@ -1,5 +1,5 @@
 class Card {
-  constructor(name, link, template, imageClickHandler, apiDelete, toggleButton, apiInfo) {
+  constructor(name, link, template, imageClickHandler, apiDelete, toggleButton, apiInfo, id) {
     this._name = name;
     this._link = link;
     this._template = template;
@@ -7,7 +7,11 @@ class Card {
     this._deleteHandler = apiDelete
     this._toggleButton = toggleButton; 
     this._apiInformation = apiInfo;
-    this._id = NaN
+    this._id = id;
+  }
+
+  test(){
+    console.log(this._id);
   }
 
   _addImageFunctionality() {
@@ -26,7 +30,8 @@ class Card {
     const likeButton = this._template.querySelector("#gallery__like-button");
 
     this._apiInformation.forEach(item =>{
-      if (item.name == this._name && item.link == this._link){
+      console.log(item._id == this._id);
+      if (item._id == this._id){
         if (item.isLiked){
           likeButton.classList.add("gallery__like-button_liked");
         }
@@ -35,7 +40,7 @@ class Card {
     
     likeButton.addEventListener("click", () => {
 
-      this._toggleButton(this._name, this._link, () => {
+      this._toggleButton(this._id, () => {
         likeButton.classList.add("gallery__like-button_liked");
       },
       () =>{
@@ -44,28 +49,21 @@ class Card {
     });
   }
 
+  deleteCard(){
+    const deleteButton = this._template.querySelector("#gallery__trash");
+    const cardElement = deleteButton.closest(".gallery__card");
+        if (cardElement) {
+          cardElement.remove();
+      }
+  }
+
   _addDeleteFunctionality() {
     
     const deleteButton = this._template.querySelector("#gallery__trash");
-    const cardElement = deleteButton.closest(".gallery__card");
     deleteButton.addEventListener("click", () => {
-      this._apiInformation.forEach(item => {
-        if (item.name == this._name && item.link == this._link){ //use a promise instead
-          if (item._id){
-            this._id = item._id;
+      
+      this._deleteHandler(this);
 
-            console.log(this._id);
-            // this._deleteHandler(this._id);
-            
-            if (this._deleteHandler(this._id)){
-              if (cardElement) {
-                cardElement.remove();
-            }
-            };
-            
-          }
-        }
-      })
     });
   }
 
@@ -78,6 +76,7 @@ class Card {
   }
 
   addCard() {
+    this.test();
     this._template = this._template.cloneNode(true);
 
     const cardElement = this._template;
