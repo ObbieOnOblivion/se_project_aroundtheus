@@ -22,7 +22,7 @@ import { avatarPopup } from "../components/AvatarPopup";
 
   api.getInitialcards().then((items) => {
     // handle the response
-    initialCardsInfo = items;
+    initialCardsInfo = items.reverse();
     console.log(initialCardsInfo);
     const cardsSection = new Section(
       {
@@ -78,13 +78,24 @@ import { avatarPopup } from "../components/AvatarPopup";
     errorClass: "popup__error_visible",
   };
 
+  const avatarConfiguration = {
+    formSelector: ".modal-avatar__container",
+    inputSelector: ".modal-avatar__input",
+    submitButtonSelector: ".modal__save-button",
+    inactiveButtonClass: "transparent",
+    nputErrorClass: "popup__input_type_error",
+    errorClass: "popup__error_visible",
+  }
+
   const editValidator = new FormValidator(configuration, editForm);
   const addValidator = new FormValidator(configuration, addForm);
-  const avatarValidator = new FormValidator(configuration, avatarForm);
+  const avatarValidator = new FormValidator(avatarConfiguration, avatarForm);
 
   editValidator.enableValidation();
   addValidator.enableValidation();
   avatarValidator.enableValidation();
+
+  // console.log(avatarValidator.)
 
   const profile = document.querySelector("#profile");
   const profileEditButton = profile.querySelector("#profile__edit_button");
@@ -115,7 +126,8 @@ import { avatarPopup } from "../components/AvatarPopup";
   });
 
   //functions
-
+  const deletePopup = new confirmationPopup("#confirmation-modal");
+  deletePopup.setEventListeners();
 
   function addCard(name, description, template, id) {
 
@@ -125,15 +137,16 @@ import { avatarPopup } from "../components/AvatarPopup";
       template,
       imageClickHandler,
       (card) => {
-        console.log(card);
+        console.log(card._id);
 
         // api.deleteCard(card._id, card.deleteCard()); // 
-        const deletePopup = new confirmationPopup("#confirmation-modal", api.deleteCard)
         deletePopup.open();
-        const deleteFunctionality = {id:card._id, handler:card.deleteCard}
-        if (deletePopup.setEventListeners(deleteFunctionality)){
-          card.deleteCard(card._id);
-        };
+        deletePopup.setSubmitAction(() =>{
+          api.deleteCard(card._id).then(() =>{
+            card.deleteCard();
+            deletePopup.close();
+          })
+        })
 
       },
       toggleLikeButton,
@@ -148,17 +161,26 @@ import { avatarPopup } from "../components/AvatarPopup";
     api.addCardInfo(name, description, (name, link, id) => {
       console.log(template);
       addCard(name, link, template, id);
-    });
+    }).then(
+      addPopup.saveButton.textContent = "Saving..."
+    )
   }
+  // editPopup.saveButton.textContent = "Submit";
+  // addPopup.saveButton.textContent = "Submit";
 
   function handleProfileEditSubmit(inputElements) {
-    editPopup.close();
-
+    // const saveButton = editPopup.querySelector(".modal__save-button");
+    console.log(editPopup)
     api
       .setUserInfo(inputElements.name, inputElements.description)
       .then((result) => {
         user.setUserInfo({ name: result.name, about: result.about });
-      });
+      })
+      .then(
+        editPopup.saveButton.textContent = "Saving..."
+      );
+      editPopup.close();
+
   }
 
   function handleProfileAddSubmit({ name, description }) {

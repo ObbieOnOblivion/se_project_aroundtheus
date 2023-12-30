@@ -1,22 +1,27 @@
 import Popup from "./Popup";
 
 class confirmationPopup extends Popup {
-  constructor(popupSelector, submitHandler ) {
+  constructor(popupSelector,  ) {
     super({ popupSelector });
-    this.submitHandler = submitHandler;
+  }
+  close(){
+
+    super.close();
+
   }
   open() {
     super.open();
   }
-  setEventListeners({id , handler}) {
+  setSubmitAction(submitHandler){
+    this.submitHandler = submitHandler;
+
+  }
+  setEventListeners() {
     super.setEventListeners()
     const saveButton = this._popupElement.querySelector(".modal__save-button");
-    saveButton.addEventListener("click", () => {
-      if(this.submitHandler(id)){
-        handler()
-      }
-      super.close();
-    });
+    saveButton.classList.add("transparent");
+    console.log(saveButton);
+    saveButton.addEventListener("click", () => {this.submitHandler()});
   }
 }
 

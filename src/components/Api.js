@@ -16,7 +16,7 @@ class Api {
   }
 
   deleteCard(cardId, handler) {
-    fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
+    return fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
       method: "DELETE",
       headers: this.headers,
     })
@@ -167,7 +167,7 @@ class Api {
       body: JSON.stringify({ name: name, link: description }),
     };
 
-    fetch(apiUrl, requestOptions)
+    return fetch(apiUrl, requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

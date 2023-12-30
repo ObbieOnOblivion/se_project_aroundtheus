@@ -52,6 +52,7 @@ class FormValidator {
       `#${inputElement.id}-error`
     );
     inputElement.classList.remove(inputErrorClass);
+    console.log(inputElement);
     errorMsgElement.textContent = "";
     errorMsgElement.classList.remove(errorClass);
   }
