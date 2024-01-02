@@ -6,8 +6,9 @@ import Card from "../components/Card";
 import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
 import { UserInfo } from "../components/UserInfo";
-import { confirmationPopup } from "../components/confirmationPopup";
-import { avatarPopup } from "../components/AvatarPopup";
+import { confirmationPopup } from "../components/ConfirmationPopup";
+import * as Constants from "../components/Constants";
+
 
 (function displayCards() {
   const api = new Api({
@@ -17,193 +18,202 @@ import { avatarPopup } from "../components/AvatarPopup";
       "Content-Type": "application/json",
     },
   });
+  let initialCardsInfo = NaN
 
-  let initialCardsInfo = NaN;
-
-  api.getInitialcards().then((items) => {
-    // handle the response
-    initialCardsInfo = items.reverse();
-    console.log(initialCardsInfo);
-    const cardsSection = new Section(
-      {
-        items,
-        renderer: (cardData) => {
-          console.log("---- oo ----", cardData._id);
-          addCard(cardData.name, cardData.link, cardTemplate, cardData._id);
+  api
+    .getInitialcards()
+    .then((items) => {
+      initialCardsInfo = items.reverse();
+      const cardsSection = new Section(
+        {
+          items,
+          renderer: (cardData) => {
+            addCard(cardData.name, cardData.link, Constants.cardTemplate, cardData._id);
+          },
         },
-      },
-      galleryList
-    );
-    cardsSection.renderItems();
-  });
+        Constants.galleryList
+      );
+      cardsSection.renderItems();
+    })
+    .catch((error) => {
+      console.error("Caught an error: ", error.message);
+    })
+    
+    ;
 
-  // try to incorporate PopupWithForm {problems with inputvalues}
-  const editAvatarPopup = new avatarPopup("#avatar-modal", chageAvatar);
-  const avatarPhoto = document.querySelector(".profile__avatar");
+  const editAvatarPopup = new PopupWithForm("#avatar-modal", chageAvatar);
 
   function chageAvatar(inputValue) {
-    console.log(inputValue);
-    avatarPhoto.src = inputValue;
-    api.changeAvatar(inputValue);
+    api
+      .changeAvatar(inputValue.UrlInput)
+      .then(() => {
+        user.setAvatar(inputValue.UrlInput)
+      })
+      .then(() => {
+        this.close();
+      })
+      .catch((error) => {
+        console.error("Caught an error: ", error.message);
+      });
   }
+  editAvatarPopup.setEventListeners();
 
-  avatarPhoto.addEventListener("click", () => {
+  Constants.avatarPhoto.addEventListener("click", () => {
     editAvatarPopup.open();
-    editAvatarPopup.setEventListeners();
+    avatarValidator.disableButton();
   });
 
   function toggleLikeButton(id, fillButton, vacateButton) {
-    api.toggleHeartIcon(id, fillButton, vacateButton);
+    api.toggleHeartIcon(id, fillButton, vacateButton).catch((error) => {
+      console.error("Caught an error: ", error.message);
+    });
   }
 
   // Elements
   const imageClickHandler = ({ name, link }) => {
     imagePopup.open({ name, link });
   };
-  const cardTemplate =
-    document.querySelector("#card-template").content.firstElementChild;
-  const galleryList = document.querySelector("#gallery__list");
 
-  const editForm = document.forms["edit-form"];
-  const addForm = document.forms["add-form"];
-  const avatarForm = document.forms["avatar-form"];
-  console.log(avatarForm);
+  const editValidator = new FormValidator(Constants.configuration, Constants.editForm);
+  const addValidator = new FormValidator(Constants.configuration, Constants.addForm);
+  const avatarValidator = new FormValidator(Constants.configuration, Constants.avatarForm);
+  const user = new UserInfo(Constants.profileName, Constants.profileDescription, Constants.avatarPhoto);
 
-  const configuration = {
-    formSelector: ".modal__container",
-    inputSelector: ".modal__input",
-    submitButtonSelector: ".modal__save-button",
-    inactiveButtonClass: "transparent",
-    inputErrorClass: "popup__input_type_error",
-    errorClass: "popup__error_visible",
-  };
-
-  const avatarConfiguration = {
-    formSelector: ".modal-avatar__container",
-    inputSelector: ".modal-avatar__input",
-    submitButtonSelector: ".modal__save-button",
-    inactiveButtonClass: "transparent",
-    nputErrorClass: "popup__input_type_error",
-    errorClass: "popup__error_visible",
-  }
-
-  const editValidator = new FormValidator(configuration, editForm);
-  const addValidator = new FormValidator(configuration, addForm);
-  const avatarValidator = new FormValidator(avatarConfiguration, avatarForm);
 
   editValidator.enableValidation();
   addValidator.enableValidation();
   avatarValidator.enableValidation();
 
-  // console.log(avatarValidator.)
-
-  const profile = document.querySelector("#profile");
-  const profileEditButton = profile.querySelector("#profile__edit_button");
-  const profileAddButton = profile.querySelector("#profile__add_button");
-  const profileName = profile.querySelector("#profile__name");
-  const profileDescription = profile.querySelector("#profile__description");
-  const user = new UserInfo(profileName, profileDescription);
-
   const imagePopup = new PopupWithImage("#picture-modal");
 
   const editPopup = new PopupWithForm(
-    `#${editForm.parentElement.id}`,
+    `#${Constants.editForm.parentElement.id}`,
     handleProfileEditSubmit
   );
   const addPopup = new PopupWithForm(
-    `#${addForm.parentElement.id}`,
+    `#${Constants.addForm.parentElement.id}`,
     handleProfileAddSubmit
   );
 
   imagePopup.setEventListeners();
 
   //preset profile info on load
-  api.getProfileInfo().then((results) => {
-    console.log(results);
-    profileName.textContent = results.name;
-    profileDescription.textContent = results.about;
-    avatarPhoto.src = results.avatar;
-  });
+  api
+    .getProfileInfo()
+    .then((results) => {
+      user.setUserInfo({ name: results.name, about: results.about });
+      user.setAvatar(results.avatar);
+    })
+    .catch((error) => {
+      console.error("Caught an error: ", error.message);
+    });
 
   //functions
   const deletePopup = new confirmationPopup("#confirmation-modal");
   deletePopup.setEventListeners();
 
   function addCard(name, description, template, id) {
-
+    const items = [{name: name, description:description}];
+    const cardsSection = new Section(
+      {
+        items,
+        renderer: (cardData) => {
+          addCard(cardData.name, cardData.link, Constants.cardTemplate, cardData._id);
+        },
+      },
+      Constants.galleryList
+    );
     const modelCard = new Card(
       name,
       description,
       template,
       imageClickHandler,
       (card) => {
-        console.log(card._id);
 
-        // api.deleteCard(card._id, card.deleteCard()); // 
         deletePopup.open();
-        deletePopup.setSubmitAction(() =>{
-          api.deleteCard(card._id).then(() =>{
-            card.deleteCard();
-            deletePopup.close();
-          })
-        })
-
+        deletePopup.setDefaultSaveButton();
+        deletePopup.setSubmitAction(() => {
+          api
+            .deleteCard(card._id)
+            .then(() => {
+              card.deleteCard();
+            })
+            .then(() =>{
+              deletePopup.updateSaveButton()
+            })
+            .then(() =>{
+              deletePopup.close()
+            })
+            .catch((error) => {
+              console.error("Caught an error: ", error.message);
+            });
+        });
       },
       toggleLikeButton,
       initialCardsInfo,
       id
     );
 
-    galleryList.prepend(modelCard.addCard());
+    cardsSection.addItem(modelCard.generateCard())
   }
 
   function createCard(name, description, template) {
-    api.addCardInfo(name, description, (name, link, id) => {
-      console.log(template);
-      addCard(name, link, template, id);
-    }).then(
-      addPopup.saveButton.textContent = "Saving..."
-    )
+    addPopup._submitBtn.textContent = "Saving...";
+    api
+      .addCardInfo(name, description, (name, link, id) => {
+        addCard(name, link, template, id);
+      })
+      .catch((error) => {
+        console.error("Caught an error: ", error.message);
+      })
+      .finally(() =>{
+        addPopup._submitBtn.textContent = "Save"
+      })
+      ;
   }
-  // editPopup.saveButton.textContent = "Submit";
-  // addPopup.saveButton.textContent = "Submit";
 
   function handleProfileEditSubmit(inputElements) {
-    // const saveButton = editPopup.querySelector(".modal__save-button");
-    console.log(editPopup)
+    editPopup._submitBtn.textContent = "Saving...";
     api
       .setUserInfo(inputElements.name, inputElements.description)
       .then((result) => {
         user.setUserInfo({ name: result.name, about: result.about });
       })
-      .then(
-        editPopup.saveButton.textContent = "Saving..."
-      );
-      editPopup.close();
-
+      .then(() =>{
+        editPopup.close();
+      })
+      .catch((error) => {
+        console.error("Caught an error: ", error.message);
+      })
+      .finally(() =>{
+        editPopup._submitBtn.textContent = "Save"
+      })
+      ;
   }
 
   function handleProfileAddSubmit({ name, description }) {
-    createCard(name, description, cardTemplate);
+    createCard(name, description, Constants.cardTemplate);
     addPopup.close();
   }
 
   //event listeners
 
-  profileEditButton.addEventListener("click", () => {
+  Constants.profileEditButton.addEventListener("click", () => {
     api.getProfileInfo().then((data) => {
-      console.log(data);
-      editPopup.setPreviewedValues({
-        //api
-        name: data.name,
-        description: data.about,
-      });
+      editPopup
+        .setPreviewedValues({
+          name: data.name,
+          description: data.about,
+        })
+        
+    }).catch((error) => {
+      console.error("Caught an error: ", error.message);
     });
 
     editPopup.open();
   });
 
-  profileAddButton.addEventListener("click", () => {
+  Constants.profileAddButton.addEventListener("click", () => {
     addPopup.open();
     addValidator.disableButton();
   });
@@ -211,6 +221,4 @@ import { avatarPopup } from "../components/AvatarPopup";
   editPopup.setEventListeners();
 
   addPopup.setEventListeners();
-
-  console.log(api.test());
 })();

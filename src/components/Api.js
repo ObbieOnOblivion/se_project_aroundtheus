@@ -1,146 +1,113 @@
 
-const obj = {name: "obbie", ocupation: "Crypto Daytrader"};
-
 class Api {
-  //refactoring needed
+
   constructor({ baseUrl, headers }) {
     this.baseUrl = baseUrl;
     this.headers = headers;
   }
 
-  test(){
-    const obj2 = {residance: "USA", hobby: "WallSteet Bets"}
-    obj2.__proto__ = obj
-
-    return obj2.name
+  _request(url, options) {
+    return fetch(url, options).then(this._checkResponse);
   }
 
-  deleteCard(cardId, handler) {
-    return fetch(`https://around-api.en.tripleten-services.com/v1/cards/${cardId}`, {
+  _checkResponse(response) {
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    return response;
+  }
+
+  deleteCard(cardId) {
+    const url = `${this.baseUrl}/cards/${cardId}`;
+    const options = {
       method: "DELETE",
       headers: this.headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        console.log("Data deleted successfully");
-        return response
-      })
+    };
 
-      .catch((error) => {
-        console.error("Error deleting data:", error);
-      });
+    return this._request(url, options);
   }
 
   getInitialcards() {
-    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+    const url = `${this.baseUrl}/cards`;
+    const options = {
       method: "GET",
       headers: this.headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        // console.log(response.json())
-        return response.json();
-      })
-      .catch((error) => {
-        console.error("Error updating avatar:", error);
-      });
+    };
+
+    return this._request(url, options).then((response) => {
+      return response.json();
+    });
   }
 
   getProfileInfo() {
-    return fetch("https://around-api.en.tripleten-services.com/v1/users/me", {
+    const url = `${this.baseUrl}/users/me`;
+    const options = {
       method: "GET",
       headers: this.headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    };
 
-        return response.json();
-      })
-      .then((data) => {
-        return data;
-      })
-      .catch((error) => {
-        console.error("Error updating avatar:", error);
-      });
+    return this._request(url, options).then((data) => {
+      return data.json();
+    });
   }
 
   changeAvatar(link) {
-    fetch("https://around-api.en.tripleten-services.com/v1/users/me/avatar", {
+    const url = `${this.baseUrl}/users/me/avatar`;
+    const options = {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify({
         avatar: link,
       }),
-    })
+    };
+
+    return this._request(url, options)
+
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         return response.json();
       })
       .then((data) => {
-        console.log("Avatar updated successfully:", data);
-      })
-      .catch((error) => {
-        console.error("Error updating avatar:", error);
+        return data;
       });
   }
 
   preformToggle(cardId, isLiked, fillButton, vacateButton) {
     // specify that its a function
 
-    const apiUrl = `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`;
-    console.log("thisisis");
-
-    const requestOptions = {
+    const url = `${this.baseUrl}/cards/${cardId}/likes`;
+    const options = {
       method: isLiked ? "DELETE" : "PUT",
       headers: this.headers,
     };
 
-    return fetch(apiUrl, requestOptions)
+    return this._request(url, options)
+
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         return response.json();
       })
+
       .then((data) => {
-        console.log("Card like status updated successfully:", data.isLiked);
-        console.log(typeof data.isLiked);
         if (data.isLiked) {
-          console.log("well well");
           fillButton(); // two handlers
         } else {
           vacateButton();
         }
         return data;
-      })
-      .catch((error) => {
-        console.error("Error updating card like status:", error);
-        throw error;
       });
   }
 
   toggleHeartIcon(id, fillButton, vacateButton) {
-    return fetch("https://around-api.en.tripleten-services.com/v1/cards", {
+    const url = `${this.baseUrl}/cards`;
+    const options = {
       method: "GET",
       headers: this.headers,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response;
-      })
+    };
+
+    return this._request(url, options)
       .then((res) => {
         return res.json();
       })
+
       .then((res) => {
         res.forEach((element) => {
           if (element._id == id) {
@@ -150,66 +117,48 @@ class Api {
               fillButton,
               vacateButton
             );
-            return element._id;
           }
         });
-      })
-      .catch((error) => {
-        console.error("Error updating avatar:", error);
       });
   }
 
   addCardInfo(name, description, addCardMethod) {
-    const apiUrl = `${this.baseUrl}/cards`;
-    const requestOptions = {
+    const url = `${this.baseUrl}/cards`;
+    const options = {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({ name: name, link: description }),
     };
 
-    return fetch(apiUrl, requestOptions)
+    return this._request(url, options)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         return response.json();
       })
       .then((data) => {
-        console.log("api workie workie")
         addCardMethod(data["name"], data["link"], data["_id"]);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+        return data;
       });
   }
 
   setUserInfo(name, about) {
-    const apiUrl = `${this.baseUrl}/users/me`;
-
     const patchData = {
       name: name,
       about: about,
     };
 
-    const requestOptions = {
+    const url = `${this.baseUrl}/users/me`;
+    const options = {
       method: "PATCH",
       headers: this.headers,
       body: JSON.stringify(patchData),
     };
 
-    return fetch(apiUrl, requestOptions)
+    return this._request(url, options)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
         return response.json();
       })
       .then((data) => {
-        // console.log('Updated resource:', data);
         return data;
-      })
-      .catch((error) => {
-        // console.error('Error:', error);
       });
   }
 }

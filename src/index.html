@@ -34,13 +34,11 @@
 
     <!-- modal-avatar -->
     <div class="modal" id="avatar-modal">
-      <!-- change class names so you can click to close  -->
-      <form class="modal-avatar__container" name="avatar-form">
-        <h3 class="modal-avatar__header" >Change Profile Picture</h3> 
-        <input id="modal-avatar__input" class="modal-avatar__input" type="url" placeholder="Enter Url" name="UrlInput">
-        <!-- modal-avatar__input_name-error -->
-        <span id="modal-avatar__input-error" class=" modal__input-description"></span>
-        <input class="modal__save-button" type="submit" name="SubmitInput"></input>  
+      <form class="modal__container modal__container_avatar" name="avatar-form">
+        <h3 class="modal__header modal__header_avatar" >Change Profile Picture</h3> 
+        <input id="modal-avatar__input" class="modal__input" type="url" placeholder="Enter Url" name="UrlInput">
+        <span id="modal-avatar__input-error" class="modal__input-description"></span>
+        <button class="modal__save-button" type="submit" name="SubmitInput">Save</button>  
       </form>
       <button
         class="modal__close-button"
