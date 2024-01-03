@@ -2,6 +2,9 @@ class FormValidator {
   constructor(options, formElement) {
     this._options = options;
     this._formElement = formElement;
+    this._saveButton = this._formElement.querySelector(
+      this._options.submitButtonSelector
+    );
   }
 
   _checkFormValidity(elements) {
@@ -10,20 +13,14 @@ class FormValidator {
 
   disableButton() {
     const inactiveButtonClass = this._options.inactiveButtonClass;
-    const saveButton = this._formElement.querySelector(
-      this._options.submitButtonSelector
-    );
-    saveButton.classList.add(inactiveButtonClass);
-    saveButton.disabled = true;
+    this._saveButton.classList.add(inactiveButtonClass);
+    this._saveButton.disabled = true;
   }
 
   activateButton() {
     const inactiveButtonClass = this._options.inactiveButtonClass;
-    const saveButton = this._formElement.querySelector(
-      this._options.submitButtonSelector
-    );
-    saveButton.classList.remove(inactiveButtonClass);
-    saveButton.disabled = false;
+    this._saveButton.classList.remove(inactiveButtonClass);
+    this._saveButton.disabled = false;
   }
 
   _toggleButtonState(inputElement) {
