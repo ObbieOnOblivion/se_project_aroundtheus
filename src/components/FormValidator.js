@@ -5,9 +5,6 @@ class FormValidator {
   }
 
   _checkFormValidity(elements) {
-    if (elements.length == 1){
-      return(elements[0].validity.valid);
-    }
     return elements.every((element) => element.validity.valid);
   }
 
@@ -83,7 +80,6 @@ class FormValidator {
       inputElement.addEventListener("input", () => {
         if (inputElement.value.length == 0){
           this.disableButton();
-
         }else{
           this._checkInputValidity(inputElement);
           this._toggleButtonState(inputElement);

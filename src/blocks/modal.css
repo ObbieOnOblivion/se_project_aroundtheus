@@ -215,6 +215,9 @@
         width: 100%;
 
     }
+    .modal__container_avatar{
+        height: 260px;
+    }
 }
 
 @media screen and (max-width:590px) {
@@ -253,9 +256,15 @@
 
     .modal__save-button{
         height: 45px;
-        margin-bottom: 25px;
         font-size: 14px;
         line-height: 17px;
+    }
+    .modal__header_avatar{
+        margin: 0px;
+        margin-bottom: 30px;
+    }
+    .modal__container_avatar{
+        height: 220px;
     }
 }
  

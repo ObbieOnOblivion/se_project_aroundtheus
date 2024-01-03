@@ -10,6 +10,11 @@
     list-style-type: none;
     align-items: center;
     margin: 0px;
+    position: relative;
+}
+.profile__item{
+    position: relative;
+    overflow: hidden;
 }
 
 .profile__avatar{
@@ -20,8 +25,22 @@
     margin-top: 3.75px;
     margin-bottom: 3.75px;
     transition: opacity 0.5s ease-in-out;
+    
 }
 
+.profile__avatar-edit{
+    position: absolute;
+    right: 47%;
+    top: 40%;
+    height: 30px;
+    width: 30px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.profile__item:hover .profile__avatar-edit {
+    opacity: 1;
+}
 
 .profile__avatar:hover{
     opacity: .5;

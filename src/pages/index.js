@@ -97,7 +97,6 @@ import * as Constants from "../components/Constants";
 
   imagePopup.setEventListeners();
 
-  //preset profile info on load
   api
     .getProfileInfo()
     .then((results) => {

@@ -10,7 +10,6 @@
     <link type="image/x-icon" rel="icon" href="favicon.ico" />
   </head>
 
-  <!-- confirmation-modal -->
   <body class="page">
     <div class="modal" id="confirmation-modal"> 
       <div class="modal__container modal__container_confirmation">
@@ -18,7 +17,6 @@
         <button class="modal__save-button">Yes</button>
 
       </div>
-      <!-- change class names  -->
       <button
         class="modal__close-button"
         id="place-modal__close_button"
@@ -30,9 +28,8 @@
           alt="close image"
         />
       </button>
-    </div>    
+    </div>   
 
-    <!-- modal-avatar -->
     <div class="modal" id="avatar-modal">
       <form class="modal__container modal__container_avatar" name="avatar-form">
         <h3 class="modal__header modal__header_avatar" >Change Profile Picture</h3> 
@@ -195,6 +192,11 @@
                 src=""
                 alt="Avatar__Img"
               />
+              <img
+              class="profile__avatar-edit"
+              src="<%=require('./images/edit-logo.svg')%>"
+              alt="Edit Logo"
+              >
             </div>
 
             <div class="profile__item-description">
