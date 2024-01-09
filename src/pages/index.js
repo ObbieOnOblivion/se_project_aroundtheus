@@ -7,8 +7,7 @@ import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
 import { UserInfo } from "../components/UserInfo";
 import { confirmationPopup } from "../components/ConfirmationPopup";
-import * as Constants from "../components/Constants";
-
+import * as Constants from "../utils/Constants";
 
 (function displayCards() {
   const api = new Api({
@@ -18,28 +17,32 @@ import * as Constants from "../components/Constants";
       "Content-Type": "application/json",
     },
   });
-  let initialCardsInfo = NaN
+  let initialCardsInfo = NaN;
+  const cardsSection = new Section(
+    {
+      initialCardsInfo,
+      renderer: (cardData) => {
+        addCard(
+          cardData.name,
+          cardData.link,
+          Constants.cardTemplate,
+          cardData._id
+        );
+      },
+    },
+    Constants.galleryList
+  );
 
   api
     .getInitialcards()
     .then((items) => {
       initialCardsInfo = items.reverse();
-      const cardsSection = new Section(
-        {
-          items,
-          renderer: (cardData) => {
-            addCard(cardData.name, cardData.link, Constants.cardTemplate, cardData._id);
-          },
-        },
-        Constants.galleryList
-      );
+      cardsSection.items = items;
       cardsSection.renderItems();
     })
     .catch((error) => {
       console.error("Caught an error: ", error.message);
-    })
-    
-    ;
+    });
 
   const editAvatarPopup = new PopupWithForm("#avatar-modal", chageAvatar);
 
@@ -47,15 +50,29 @@ import * as Constants from "../components/Constants";
     api
       .changeAvatar(inputValue.UrlInput)
       .then(() => {
-        user.setAvatar(inputValue.UrlInput)
+        user.setAvatar(inputValue.UrlInput);
       })
       .then(() => {
-        this.close();
+        editAvatarPopup.close();
       })
       .catch((error) => {
         console.error("Caught an error: ", error.message);
+      })
+      .finally(() => {
+        editAvatarPopup.submitBtn.textContent = "Saving...";
       });
   }
+
+  function throwInputError(validator){
+    if (validator.inputElements.length == 1){
+      validator.showInputError(validator.inputElements[0]);
+    }else{
+      validator.inputElements.forEach( input => {
+        validator.showInputError(input);
+      })
+    }
+  }
+
   editAvatarPopup.setEventListeners();
 
   Constants.avatarPhoto.addEventListener("click", () => {
@@ -74,11 +91,23 @@ import * as Constants from "../components/Constants";
     imagePopup.open({ name, link });
   };
 
-  const editValidator = new FormValidator(Constants.configuration, Constants.editForm);
-  const addValidator = new FormValidator(Constants.configuration, Constants.addForm);
-  const avatarValidator = new FormValidator(Constants.configuration, Constants.avatarForm);
-  const user = new UserInfo(Constants.profileName, Constants.profileDescription, Constants.avatarPhoto);
-
+  const editValidator = new FormValidator(
+    Constants.configuration,
+    Constants.editForm
+  );
+  const addValidator = new FormValidator(
+    Constants.configuration,
+    Constants.addForm
+  );
+  const avatarValidator = new FormValidator(
+    Constants.configuration,
+    Constants.avatarForm
+  );
+  const user = new UserInfo(
+    Constants.profileName,
+    Constants.profileDescription,
+    Constants.avatarPhoto
+  );
 
   editValidator.enableValidation();
   addValidator.enableValidation();
@@ -112,36 +141,26 @@ import * as Constants from "../components/Constants";
   deletePopup.setEventListeners();
 
   function addCard(name, description, template, id) {
-    const items = [{name: name, description:description}];
-    const cardsSection = new Section(
-      {
-        items,
-        renderer: (cardData) => {
-          addCard(cardData.name, cardData.link, Constants.cardTemplate, cardData._id);
-        },
-      },
-      Constants.galleryList
-    );
+    const items = [{ name: name, description: description }];
     const modelCard = new Card(
       name,
       description,
       template,
       imageClickHandler,
       (card) => {
-
         deletePopup.open();
         deletePopup.setDefaultSaveButton();
         deletePopup.setSubmitAction(() => {
           api
-            .deleteCard(card._id)
+            .deleteCard(card.id)
             .then(() => {
               card.deleteCard();
             })
-            .then(() =>{
-              deletePopup.updateSaveButton()
+            .then(() => {
+              deletePopup.updateSaveButton();
             })
-            .then(() =>{
-              deletePopup.close()
+            .then(() => {
+              deletePopup.close();
             })
             .catch((error) => {
               console.error("Caught an error: ", error.message);
@@ -152,69 +171,61 @@ import * as Constants from "../components/Constants";
       initialCardsInfo,
       id
     );
-
-    cardsSection.addItem(modelCard.generateCard())
+    cardsSection.items = items;
+    cardsSection.addItem(modelCard.generateCard());
   }
 
   function createCard(name, description, template) {
-    addPopup._submitBtn.textContent = "Saving...";
-    api
+    return api
       .addCardInfo(name, description, (name, link, id) => {
         addCard(name, link, template, id);
       })
       .catch((error) => {
         console.error("Caught an error: ", error.message);
       })
-      .finally(() =>{
-        addPopup._submitBtn.textContent = "Save"
-      })
-      ;
+      .finally(() => {
+        addPopup.submitBtn.textContent = "Saving...";
+      });
   }
 
   function handleProfileEditSubmit(inputElements) {
-    editPopup._submitBtn.textContent = "Saving...";
     api
       .setUserInfo(inputElements.name, inputElements.description)
       .then((result) => {
         user.setUserInfo({ name: result.name, about: result.about });
       })
-      .then(() =>{
+      .then(() => {
         editPopup.close();
       })
       .catch((error) => {
         console.error("Caught an error: ", error.message);
       })
-      .finally(() =>{
-        editPopup._submitBtn.textContent = "Save"
-      })
-      ;
+      .finally(() => {
+        editPopup.submitBtn.textContent = "Saving...";
+      });
   }
 
   function handleProfileAddSubmit({ name, description }) {
-    createCard(name, description, Constants.cardTemplate);
-    addPopup.close();
+    createCard(name, description, Constants.cardTemplate).then(
+      addPopup.close()
+    );
   }
 
   //event listeners
 
   Constants.profileEditButton.addEventListener("click", () => {
-    api.getProfileInfo().then((data) => {
-      editPopup
-        .setPreviewedValues({
-          name: data.name,
-          description: data.about,
-        })
-        
-    }).catch((error) => {
-      console.error("Caught an error: ", error.message);
+    const data = user.getUserInfo();
+    editPopup.setPreviewedValues({
+      name: data.name,
+      description: data.about,
     });
-
     editPopup.open();
   });
 
   Constants.profileAddButton.addEventListener("click", () => {
     addPopup.open();
     addValidator.disableButton();
+    throwInputError(addValidator);
   });
 
   editPopup.setEventListeners();

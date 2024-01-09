@@ -23,18 +23,17 @@ class FormValidator {
     this._saveButton.disabled = false;
   }
 
-  _toggleButtonState(inputElement) {
-    const isFormValid = this._checkFormValidity(this._inputElements);
+  _toggleButtonState() {
+    const isFormValid = this._checkFormValidity(this.inputElements);
 
     if (!isFormValid) {
       this.disableButton();
-    }
-     else {
+    } else {
       this.activateButton();
     }
   }
 
-  _showInputError(inputElement) {
+  showInputError(inputElement) {
     const { inputErrorClass, errorClass } = this._options;
     const errorMsgElement = this._formElement.querySelector(
       `#${inputElement.id}-error`
@@ -56,11 +55,9 @@ class FormValidator {
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
-      this._showInputError(inputElement);
-    }
-    else if (inputElement.value.length == 0) {
+      this.showInputError(inputElement);
+    } else if (inputElement.value.length == 0) {
       this.disableButton();
-      
     } else {
       this._hideInputError(inputElement);
     }
@@ -71,17 +68,15 @@ class FormValidator {
     const inputElements = [
       ...this._formElement.querySelectorAll(inputSelector),
     ];
-    this._inputElements = inputElements;
+    this.inputElements = inputElements;
 
     inputElements.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
-        if (inputElement.value.length == 0){
+        if (inputElement.value.length == 0) {
           this.disableButton();
-        }else{
-          this._checkInputValidity(inputElement);
-          this._toggleButtonState(inputElement);
         }
-        
+        this._checkInputValidity(inputElement);
+        this._toggleButtonState();
       });
     });
   }

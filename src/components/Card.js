@@ -7,7 +7,7 @@ class Card {
     this._deleteHandler = apiDelete
     this._toggleButton = toggleButton; 
     this._apiInformation = apiInfo;
-    this._id = id;
+    this.id = id;
   }
 
   _addImageFunctionality() {
@@ -24,7 +24,7 @@ class Card {
     const likeButton = this._template.querySelector("#gallery__like-button");
 
     this._apiInformation.forEach(item =>{
-      if (item._id == this._id){
+      if (item._id == this.id){
         if (item.isLiked){
           likeButton.classList.add("gallery__like-button_liked");
         }
@@ -33,7 +33,7 @@ class Card {
     
     likeButton.addEventListener("click", () => {
 
-      this._toggleButton(this._id, () => {
+      this._toggleButton(this.id, () => {
         likeButton.classList.add("gallery__like-button_liked");
       },
       () =>{

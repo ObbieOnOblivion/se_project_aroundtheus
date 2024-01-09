@@ -14,7 +14,7 @@ class Api {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    return response;
+    return response.json();
   }
 
   deleteCard(cardId) {
@@ -34,9 +34,7 @@ class Api {
       headers: this.headers,
     };
 
-    return this._request(url, options).then((response) => {
-      return response.json();
-    });
+    return this._request(url, options);
   }
 
   getProfileInfo() {
@@ -46,9 +44,7 @@ class Api {
       headers: this.headers,
     };
 
-    return this._request(url, options).then((data) => {
-      return data.json();
-    });
+    return this._request(url, options);
   }
 
   changeAvatar(link) {
@@ -61,14 +57,7 @@ class Api {
       }),
     };
 
-    return this._request(url, options)
-
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        return data;
-      });
+    return this._request(url, options);
   }
 
   preformToggle(cardId, isLiked, fillButton, vacateButton) {
@@ -81,10 +70,6 @@ class Api {
     };
 
     return this._request(url, options)
-
-      .then((response) => {
-        return response.json();
-      })
 
       .then((data) => {
         if (data.isLiked) {
@@ -104,10 +89,6 @@ class Api {
     };
 
     return this._request(url, options)
-      .then((res) => {
-        return res.json();
-      })
-
       .then((res) => {
         res.forEach((element) => {
           if (element._id == id) {
@@ -131,9 +112,6 @@ class Api {
     };
 
     return this._request(url, options)
-      .then((response) => {
-        return response.json();
-      })
       .then((data) => {
         addCardMethod(data["name"], data["link"], data["_id"]);
         return data;
@@ -154,12 +132,6 @@ class Api {
     };
 
     return this._request(url, options)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        return data;
-      });
   }
 }
 

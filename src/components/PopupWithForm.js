@@ -6,8 +6,8 @@ class PopupWithForm extends Popup {
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popupElement.querySelector("form");
     this._inputList = [...this._popupElement.querySelectorAll("input")];
-    this._submitBtn = this._popupElement.querySelector(".modal__save-button");
-    this._submitBtnText = this._submitBtn.textContent;
+    this.submitBtn = this._popupElement.querySelector(".modal__save-button");
+    this._submitBtnText = this.submitBtn.textContent;
 
   }
 
@@ -25,6 +25,12 @@ class PopupWithForm extends Popup {
     });
     return inputValues;
   }
+
+  open(){
+    super.open();
+    this.submitBtn.textContent = "Save";
+  }
+
   close() {
     super.close();
     this._form.reset();
