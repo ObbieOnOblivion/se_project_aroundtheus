@@ -6,7 +6,7 @@ import Card from "../components/Card";
 import { PopupWithImage } from "../components/PopupWithImage";
 import { Api } from "../components/Api";
 import { UserInfo } from "../components/UserInfo";
-import { confirmationPopup } from "../components/ConfirmationPopup";
+import { ConfirmationPopup } from "../components/ConfirmationPopup";
 import * as Constants from "../utils/Constants";
 
 (function displayCards() {
@@ -137,7 +137,7 @@ import * as Constants from "../utils/Constants";
     });
 
   //functions
-  const deletePopup = new confirmationPopup("#confirmation-modal");
+  const deletePopup = new ConfirmationPopup("#confirmation-modal");
   deletePopup.setEventListeners();
 
   function addCard(name, description, template, id) {
@@ -180,6 +180,9 @@ import * as Constants from "../utils/Constants";
       .addCardInfo(name, description, (name, link, id) => {
         addCard(name, link, template, id);
       })
+      .then(
+        addPopup.close()
+      )
       .catch((error) => {
         console.error("Caught an error: ", error.message);
       })
@@ -206,9 +209,7 @@ import * as Constants from "../utils/Constants";
   }
 
   function handleProfileAddSubmit({ name, description }) {
-    createCard(name, description, Constants.cardTemplate).then(
-      addPopup.close()
-    );
+    createCard(name, description, Constants.cardTemplate);
   }
 
   //event listeners

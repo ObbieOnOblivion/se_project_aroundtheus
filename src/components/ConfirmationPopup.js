@@ -1,6 +1,6 @@
 import Popup from "./Popup";
 
-class confirmationPopup extends Popup {
+class ConfirmationPopup extends Popup {
   constructor(popupSelector) {
     super({ popupSelector });
   }
@@ -22,4 +22,4 @@ class confirmationPopup extends Popup {
   }
 }
 
-export { confirmationPopup };
+export { ConfirmationPopup };

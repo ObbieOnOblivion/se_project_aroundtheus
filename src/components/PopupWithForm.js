@@ -28,7 +28,6 @@ class PopupWithForm extends Popup {
 
   open(){
     super.open();
-    this.submitBtn.textContent = "Save";
   }
 
   close() {
