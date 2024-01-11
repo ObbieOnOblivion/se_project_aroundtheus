@@ -63,20 +63,11 @@ import * as Constants from "../utils/Constants";
       });
   }
 
-  function throwInputError(validator){
-    if (validator.inputElements.length == 1){
-      validator.showInputError(validator.inputElements[0]);
-    }else{
-      validator.inputElements.forEach( input => {
-        validator.showInputError(input);
-      })
-    }
-  }
-
   editAvatarPopup.setEventListeners();
 
   Constants.avatarPhoto.addEventListener("click", () => {
     editAvatarPopup.open();
+    editAvatarPopup.submitBtn.textContent = "Save";
     avatarValidator.disableButton();
   });
 
@@ -221,12 +212,13 @@ import * as Constants from "../utils/Constants";
       description: data.about,
     });
     editPopup.open();
-  });
+    editPopup.submitBtn.textContent = "Save";
+  });  
 
   Constants.profileAddButton.addEventListener("click", () => {
     addPopup.open();
+    addPopup.submitBtn.textContent = "Save";
     addValidator.disableButton();
-    throwInputError(addValidator);
   });
 
   editPopup.setEventListeners();

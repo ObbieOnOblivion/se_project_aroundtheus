@@ -7,7 +7,6 @@ class PopupWithForm extends Popup {
     this._form = this._popupElement.querySelector("form");
     this._inputList = [...this._popupElement.querySelectorAll("input")];
     this.submitBtn = this._popupElement.querySelector(".modal__save-button");
-    this._submitBtnText = this.submitBtn.textContent;
 
   }
 
@@ -28,6 +27,7 @@ class PopupWithForm extends Popup {
 
   open(){
     super.open();
+    // this.submitBtn.textContent = "Save"
   }
 
   close() {
