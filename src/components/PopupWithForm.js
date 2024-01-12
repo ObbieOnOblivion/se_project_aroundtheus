@@ -19,7 +19,7 @@ class PopupWithForm extends Popup {
   _getInputValues() {
     const inputValues = {};
 
-    this._inputList.forEach((input) => { // look at this 
+    this._inputList.forEach((input) => { 
       inputValues[input.name] = input.value;
     });
     return inputValues;
@@ -27,7 +27,6 @@ class PopupWithForm extends Popup {
 
   open(){
     super.open();
-    // this.submitBtn.textContent = "Save"
   }
 
   close() {
@@ -42,6 +41,7 @@ class PopupWithForm extends Popup {
       e.preventDefault();
       const inputValues = this._getInputValues()
       this._handleFormSubmit(inputValues);
+      this.submitBtn.textContent = "Saving...";
     });
   }
 }

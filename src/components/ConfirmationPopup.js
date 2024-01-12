@@ -18,7 +18,7 @@ class ConfirmationPopup extends Popup {
   setEventListeners() {
     super.setEventListeners()
     this._saveButton = this._popupElement.querySelector(".modal__save-button");
-    this._saveButton.addEventListener("click", () => {this.submitHandler()});
+      this._saveButton.addEventListener("click", () => {this.submitHandler(), this._saveButton.textContent = "Saving..."});
   }
 }
 

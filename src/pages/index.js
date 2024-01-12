@@ -59,7 +59,7 @@ import * as Constants from "../utils/Constants";
         console.error("Caught an error: ", error.message);
       })
       .finally(() => {
-        editAvatarPopup.submitBtn.textContent = "Saving...";
+        editAvatarPopup.submitBtn.textContent = "Save";
       });
   }
 
@@ -67,7 +67,6 @@ import * as Constants from "../utils/Constants";
 
   Constants.avatarPhoto.addEventListener("click", () => {
     editAvatarPopup.open();
-    editAvatarPopup.submitBtn.textContent = "Save";
     avatarValidator.disableButton();
   });
 
@@ -132,7 +131,6 @@ import * as Constants from "../utils/Constants";
   deletePopup.setEventListeners();
 
   function addCard(name, description, template, id) {
-    const items = [{ name: name, description: description }];
     const modelCard = new Card(
       name,
       description,
@@ -140,7 +138,6 @@ import * as Constants from "../utils/Constants";
       imageClickHandler,
       (card) => {
         deletePopup.open();
-        deletePopup.setDefaultSaveButton();
         deletePopup.setSubmitAction(() => {
           api
             .deleteCard(card.id)
@@ -148,13 +145,13 @@ import * as Constants from "../utils/Constants";
               card.deleteCard();
             })
             .then(() => {
-              deletePopup.updateSaveButton();
-            })
-            .then(() => {
               deletePopup.close();
             })
             .catch((error) => {
               console.error("Caught an error: ", error.message);
+            })
+            .finally(() =>{
+              deletePopup._saveButton.textContent = "Save"
             });
         });
       },
@@ -162,7 +159,6 @@ import * as Constants from "../utils/Constants";
       initialCardsInfo,
       id
     );
-    cardsSection.items = items;
     cardsSection.addItem(modelCard.generateCard());
   }
 
@@ -171,14 +167,14 @@ import * as Constants from "../utils/Constants";
       .addCardInfo(name, description, (name, link, id) => {
         addCard(name, link, template, id);
       })
-      .then(
-        addPopup.close()
-      )
+      .then(() =>{
+        addPopup.close();
+      })
       .catch((error) => {
         console.error("Caught an error: ", error.message);
       })
       .finally(() => {
-        addPopup.submitBtn.textContent = "Saving...";
+        addPopup.submitBtn.textContent = "Save";
       });
   }
 
@@ -195,7 +191,7 @@ import * as Constants from "../utils/Constants";
         console.error("Caught an error: ", error.message);
       })
       .finally(() => {
-        editPopup.submitBtn.textContent = "Saving...";
+        editPopup.submitBtn.textContent = "Save";
       });
   }
 
@@ -212,12 +208,12 @@ import * as Constants from "../utils/Constants";
       description: data.about,
     });
     editPopup.open();
-    editPopup.submitBtn.textContent = "Save";
+    // editPopup.submitBtn.textContent = "Saving";
   });  
 
   Constants.profileAddButton.addEventListener("click", () => {
     addPopup.open();
-    addPopup.submitBtn.textContent = "Save";
+    // addPopup.submitBtn.textContent = "Saving";
     addValidator.disableButton();
   });
 
