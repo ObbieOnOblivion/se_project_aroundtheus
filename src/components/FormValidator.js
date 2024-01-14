@@ -2,6 +2,9 @@ class FormValidator {
   constructor(options, formElement) {
     this._options = options;
     this._formElement = formElement;
+    this._saveButton = this._formElement.querySelector(
+      this._options.submitButtonSelector
+    );
   }
 
   _checkFormValidity(elements) {
@@ -10,24 +13,18 @@ class FormValidator {
 
   disableButton() {
     const inactiveButtonClass = this._options.inactiveButtonClass;
-    const saveButton = this._formElement.querySelector(
-      this._options.submitButtonSelector
-    );
-    saveButton.classList.add(inactiveButtonClass);
-    saveButton.disabled = true;
+    this._saveButton.classList.add(inactiveButtonClass);
+    this._saveButton.disabled = true;
   }
 
   activateButton() {
     const inactiveButtonClass = this._options.inactiveButtonClass;
-    const saveButton = this._formElement.querySelector(
-      this._options.submitButtonSelector
-    );
-    saveButton.classList.remove(inactiveButtonClass);
-    saveButton.disabled = false;
+    this._saveButton.classList.remove(inactiveButtonClass);
+    this._saveButton.disabled = false;
   }
 
   _toggleButtonState() {
-    const isFormValid = this._checkFormValidity(this._inputElements);
+    const isFormValid = this._checkFormValidity(this.inputElements);
 
     if (!isFormValid) {
       this.disableButton();
@@ -36,7 +33,7 @@ class FormValidator {
     }
   }
 
-  _showInputError(inputElement) {
+  showInputError(inputElement) {
     const { inputErrorClass, errorClass } = this._options;
     const errorMsgElement = this._formElement.querySelector(
       `#${inputElement.id}-error`
@@ -58,7 +55,9 @@ class FormValidator {
 
   _checkInputValidity(inputElement) {
     if (!inputElement.validity.valid) {
-      this._showInputError(inputElement);
+      this.showInputError(inputElement);
+    } else if (inputElement.value.length == 0) {
+      this.disableButton();
     } else {
       this._hideInputError(inputElement);
     }
@@ -69,12 +68,15 @@ class FormValidator {
     const inputElements = [
       ...this._formElement.querySelectorAll(inputSelector),
     ];
-    this._inputElements = inputElements;
+    this.inputElements = inputElements;
 
     inputElements.forEach((inputElement) => {
       inputElement.addEventListener("input", () => {
+        if (inputElement.value.length == 0) {
+          this.disableButton();
+        }
         this._checkInputValidity(inputElement);
-        this._toggleButtonState(inputElements);
+        this._toggleButtonState();
       });
     });
   }

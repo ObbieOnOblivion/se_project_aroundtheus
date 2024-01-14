@@ -1,16 +1,18 @@
 class Card {
-  constructor(name, link, template, imageClickHandler) {
+  constructor(name, link, template, imageClickHandler, apiDelete, toggleButton, apiInfo, id) {
     this._name = name;
     this._link = link;
     this._template = template;
-    this._imageClickHandler = imageClickHandler;
+    this._imageClickHandler = imageClickHandler; 
+    this._deleteHandler = apiDelete
+    this._toggleButton = toggleButton; 
+    this._apiInformation = apiInfo;
+    this.id = id;
   }
 
   _addImageFunctionality() {
-    const cardElement = this._template;
-    const cardImageEl = cardElement.querySelector("#gallery__image");
 
-    cardImageEl.addEventListener("click", () => {
+    this.cardImageEl.addEventListener("click", () => {
       this._imageClickHandler({
         name: this._name,
         link: this._link,
@@ -18,21 +20,42 @@ class Card {
     });
   }
 
-  _addLikeFunctionality() {
+  _addLikeFunctionality() { 
     const likeButton = this._template.querySelector("#gallery__like-button");
 
+    this._apiInformation.forEach(item =>{
+      if (item._id == this.id){
+        if (item.isLiked){
+          likeButton.classList.add("gallery__like-button_liked");
+        }
+      }
+    })
+    
     likeButton.addEventListener("click", () => {
-      likeButton.classList.toggle("gallery__like-button_liked");
+
+      this._toggleButton(this.id, () => {
+        likeButton.classList.add("gallery__like-button_liked");
+      },
+      () =>{
+        likeButton.classList.remove("gallery__like-button_liked");
+      })
     });
   }
 
-  _addDeleteFunctionality() {
-    const deleteButton = this._template.querySelector("#gallery__trash");
-    deleteButton.addEventListener("click", () => {
-      const cardElement = deleteButton.closest(".gallery__card");
-      if (cardElement) {
-        cardElement.remove();
+  deleteCard(){
+    const closestCard = this._deleteButton.closest(".gallery__card");
+        if (closestCard) {
+          closestCard.remove();
       }
+  }
+
+  _addDeleteFunctionality() {
+    
+    this._deleteButton = this._template.querySelector("#gallery__trash");
+    this._deleteButton.addEventListener("click", () => {
+      
+      this._deleteHandler(this);
+
     });
   }
 
@@ -44,16 +67,15 @@ class Card {
     this._addDeleteFunctionality();
   }
 
-  addCard() {
+  generateCard() {
+
     this._template = this._template.cloneNode(true);
-
-    const cardElement = this._template;
-    const cardImageEl = cardElement.querySelector("#gallery__image");
-    const cardTitleEl = cardElement.querySelector("#gallery__text");
-
-    cardTitleEl.textContent = this._name;
-    cardImageEl.src = this._link;
-    cardImageEl.alt = this._name;
+    this.cardImageEl = this._template.querySelector("#gallery__image");
+    this.cardTitleEl = this._template.querySelector("#gallery__text");
+    
+    this.cardTitleEl.textContent = this._name;
+    this.cardImageEl.src = this._link;
+    this.cardImageEl.alt = this._name;
     this._setEventListeners();
 
     return this._template;
