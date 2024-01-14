@@ -151,7 +151,7 @@ import * as Constants from "../utils/Constants";
               console.error("Caught an error: ", error.message);
             })
             .finally(() =>{
-              deletePopup._saveButton.textContent = "Save"
+              deletePopup.submitBtn.textContent = "Yes";
             });
         });
       },

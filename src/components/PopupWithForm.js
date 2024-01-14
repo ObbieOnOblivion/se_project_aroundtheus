@@ -25,10 +25,6 @@ class PopupWithForm extends Popup {
     return inputValues;
   }
 
-  open(){
-    super.open();
-  }
-
   close() {
     super.close();
     this._form.reset();

@@ -8,17 +8,11 @@ class ConfirmationPopup extends Popup {
     this.submitHandler = submitHandler;
 
   }
-  setDefaultSaveButton(){
-    this._saveButton.textContent = "Yes";
-  }
-  updateSaveButton(){
-    this._saveButton.textContent = "Deleting...";
-  }
 
   setEventListeners() {
     super.setEventListeners()
-    this._saveButton = this._popupElement.querySelector(".modal__save-button");
-      this._saveButton.addEventListener("click", () => {this.submitHandler(), this._saveButton.textContent = "Saving..."});
+    this.submitBtn = this._popupElement.querySelector(".modal__save-button");
+      this.submitBtn.addEventListener("click", () => {this.submitHandler(), this.submitBtn.textContent = "Deleting..."});
   }
 }
 
